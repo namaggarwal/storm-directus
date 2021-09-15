@@ -1,0 +1,24 @@
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "watch": {
+    "start": "extensions/**/*.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "directus start",
+    "watch": "npm-watch"
+  },
+  "keywords": [],
+  "author": "Naman Aggarwal",
+  "license": "ISC",
+  "dependencies": {
+    "directus": "^9.0.0-rc.92",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "npm-watch": "^0.11.0"
+  }
+}
