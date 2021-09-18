@@ -5,6 +5,8 @@ const ProjectService = require('./services/ProjectService');
 const Projects =  require('./models/Projects');
 const setUserHook = require('../../hooks/setuser');
 const sanitizeInputHook = require('../../hooks/sanitizeValues');
+const Actions =  require('./models/Actions');
+const ActionService = require('./services/ActionService');
 
 const beforeCreateHooks = [
   sanitizeInputHook()['items.create.before'],
@@ -86,6 +88,33 @@ module.exports = function registerEndpoint(router, {services, exceptions, databa
         return next(new ServiceUnavailableException("Unexpected error happened"));
       })
     });
+  });
+  router.post('/customers/:id/actions', (req, res, next) => {
+    const { accountability } = req;
+    const customerID = req.params.id;
+    const customers = new Customers(database);
+    const customerService = new CustomerService(customers);
+
+    const actions = new Actions(database);
+    const actionService = new ActionService(actions);
+
+    applyCreateBeforeRules(req.body, accountability, 'custom.actions')
+    .then(data => {
+      customerService.getCustomerByID(customerID, [`id`]).then((customer) => {
+        if(customer.length === 0) {
+          res.send({success: false});
+          return;
+        }
+        data = {
+          ...data,
+          customer_id: customerID,
+        };
+        actionService.addAction(data).then((action) => {
+          res.send({success: true});
+        });
+      });
+    });
+
   });
   router.post('/projects', (req, res, next) => {
     console.log(req.json());
