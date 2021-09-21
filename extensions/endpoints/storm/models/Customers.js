@@ -40,4 +40,10 @@ module.exports =  function Customers(database) {
   this.getCustomerCountByType = async function() {
     return database(TABLE_NAME).select(database.raw('count(*) as count, type')).groupBy('type');
   }
+
+  this.changeStatus = async function(id, status) {
+    return database(TABLE_NAME).where('id', '=', id).update({
+      status,
+    });
+  }
 }

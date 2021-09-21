@@ -106,6 +106,23 @@ module.exports = function registerEndpoint(
       }
     );
   });
+  router.delete("/customers/:id", (req, res, next) => {
+    const { accountability } = req;
+    const { ServiceUnavailableException } = exceptions;
+    const customerID = req.params.id;
+
+    const customers = new Customers(database);
+    const customerService = new CustomerService(customers);
+
+    customerService.deleteCustomerById(customerID).then((data) => {
+      if(data === 1) {
+        res.send({ success: true });
+        return;
+      }
+      res.send({ success: false });
+    });
+
+  });
   router.post("/customers/:id/actions", (req, res, next) => {
     const { accountability } = req;
     const customerID = req.params.id;
@@ -135,6 +152,23 @@ module.exports = function registerEndpoint(
   });
   router.post("/projects", (req, res, next) => {
     res.send({ success: true });
+  });
+  router.delete("/projects/:id", (req, res, next) => {
+    const { accountability } = req;
+    const { ServiceUnavailableException } = exceptions;
+    const projectID = req.params.id;
+
+    const projects = new Projects(database);
+    const projectService = new ProjectService(projects);
+
+    projectService.deleteProjectByID(projectID).then((data) => {
+      if(data === 1) {
+        res.send({ success: true });
+        return;
+      }
+      res.send({ success: false });
+    });
+
   });
   router.get("/types", (req, res) => {
     const actions = new Actions(database);

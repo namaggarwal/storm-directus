@@ -11,4 +11,10 @@ module.exports =  function Projects(database) {
     .select(database.raw('count(*) as Projects' ));
   }
 
+  this.changeProjectStatus = async function(id, status)  {
+    return database(TABLE_NAME).where('id', '=', id).update({
+      status,
+    });
+  }
+
 }

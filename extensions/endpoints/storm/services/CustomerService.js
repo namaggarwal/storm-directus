@@ -4,6 +4,12 @@ module.exports = function CustomerService(customerModel) {
 
   const CUSTOMER_TYPES = ['Suspect', 'Prospect', 'Client'];
 
+  const CUSTOMER_STATUS = {
+    'ACTIVE': 0,
+    'DELETED': 1,
+    'ARCHIVED': 2,
+  };
+
   this.getCustomersByType = async function(type) {
     return customerModel.getCustomersByType(type);
   }
@@ -23,6 +29,16 @@ module.exports = function CustomerService(customerModel) {
       typeCount[CUSTOMER_TYPES[val["type"]-1]] = val["count"];
     });
     return typeCount;
+  }
+
+  this.changeCustomerStatus = async function(id, status) {
+    const data = await customerModel.changeStatus(id, status);
+    console.log(data);
+    return data;
+  }
+
+  this.deleteCustomerById = async function(id) {
+    return await this.changeCustomerStatus(id, CUSTOMER_STATUS.DELETED);
   }
 
 }
