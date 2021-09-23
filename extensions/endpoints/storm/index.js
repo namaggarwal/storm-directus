@@ -35,6 +35,7 @@ const CUSTOMER_RETURNING_COLUMNS = [
   "user_created",
   "user_updated",
   "user_incharge",
+  "status",
 ];
 
 const CUSTOMER_TYPE = {
@@ -69,6 +70,7 @@ module.exports = function registerEndpoint(
         res.send({ success: false });
       });
   });
+
   router.get("/customers", (req, res, next) => {
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
@@ -81,6 +83,20 @@ module.exports = function registerEndpoint(
         res.send({ data, success: true });
       });
   });
+
+  router.get("/customers/:id", (req, res, next) => {
+    const { accountability } = req;
+    const { ServiceUnavailableException } = exceptions;
+    const customerID = req.params.id;
+    const customers = new Customers(database);
+    const customerService = new CustomerService(customers);
+    customerService
+    .getCustomerByID(customerID, CUSTOMER_RETURNING_COLUMNS)
+    .then((data) => {
+      res.send({ data: data[0], success: true });
+    });
+  });
+
   router.post("/customers", (req, res, next) => {
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
@@ -106,6 +122,7 @@ module.exports = function registerEndpoint(
       }
     );
   });
+
   router.delete("/customers/:id", (req, res, next) => {
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
@@ -123,6 +140,7 @@ module.exports = function registerEndpoint(
     });
 
   });
+
   router.post("/customers/:id/actions", (req, res, next) => {
     const { accountability } = req;
     const customerID = req.params.id;
@@ -150,9 +168,11 @@ module.exports = function registerEndpoint(
       }
     );
   });
+
   router.post("/projects", (req, res, next) => {
     res.send({ success: true });
   });
+
   router.delete("/projects/:id", (req, res, next) => {
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
@@ -170,6 +190,7 @@ module.exports = function registerEndpoint(
     });
 
   });
+
   router.get("/types", (req, res) => {
     const actions = new Actions(database);
     const actionService = new ActionService(actions);
