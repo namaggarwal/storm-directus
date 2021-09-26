@@ -26,7 +26,10 @@ module.exports =  function Customers(database) {
     .innerJoin('directus_users as uu', `${TABLE_NAME}.user_updated`, 'uu.id' )
     .innerJoin('directus_users as ui', `${TABLE_NAME}.user_incharge`, 'ui.id' )
     .select([...CUSTOMER_COLUMNS, ...getUserColumnAlias('cu','created'), ...getUserColumnAlias('uu', 'updated'), ...getUserColumnAlias('ui', 'incharge')])
-    .where(`${TABLE_NAME}.type`, type);
+    .where({
+      [`${TABLE_NAME}.type`]: type,
+      [`${TABLE_NAME}.status`]: 0,
+    });
   }
 
   this.createNewCustomer = async function(data) {
@@ -38,7 +41,7 @@ module.exports =  function Customers(database) {
   }
 
   this.getCustomerCountByType = async function() {
-    return database(TABLE_NAME).select(database.raw('count(*) as count, type')).groupBy('type');
+    return database(TABLE_NAME).select(database.raw('count(*) as count, type')).where({status: 0}).groupBy('type');
   }
 
   this.changeStatus = async function(id, status) {
