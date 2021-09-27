@@ -38,6 +38,19 @@ const CUSTOMER_RETURNING_COLUMNS = [
   "status",
 ];
 
+const CUSTOMER_DETAIL_RETURNING_COLUMNS = [
+  ...CUSTOMER_RETURNING_COLUMNS,
+  "name_additional",
+  "phone_additional",
+  "email_additional",
+  "nationality_additional",
+  "date_of_birth_additional",
+  "place_of_birth_additional",
+  "postal_code",
+  "source_contact",
+  "address_of_buyers"
+];
+
 const CUSTOMER_TYPE = {
   SUSPECT: 1,
   PROSPECT: 2,
@@ -91,7 +104,7 @@ module.exports = function registerEndpoint(
     const customers = new Customers(database);
     const customerService = new CustomerService(customers);
     customerService
-    .getCustomerByID(customerID, CUSTOMER_RETURNING_COLUMNS)
+    .getCustomerByID(customerID, CUSTOMER_DETAIL_RETURNING_COLUMNS)
     .then((data) => {
       res.send({ data: data[0], success: true });
     });
