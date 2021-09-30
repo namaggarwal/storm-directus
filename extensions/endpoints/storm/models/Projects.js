@@ -1,8 +1,9 @@
 module.exports =  function Projects(database) {
   const TABLE_NAME = 'projects';
 
-  this.getAllProjects = async function() {
+  this.getAllProjectsByStatus = async function(status) {
     return database(TABLE_NAME)
+    .where({status: status})
     .select();
   }
 

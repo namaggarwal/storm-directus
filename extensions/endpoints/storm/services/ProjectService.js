@@ -7,7 +7,7 @@ module.exports = function ProjectService(projectModel) {
   };
 
   this.getAllProjects = async function() {
-    return projectModel.getAllProjects();
+    return projectModel.getAllProjectsByStatus(PROJECT_STATUS.ACTIVE);
   }
 
   this.getProjectsCount = async function() {

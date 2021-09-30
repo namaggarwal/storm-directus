@@ -182,8 +182,12 @@ module.exports = function registerEndpoint(
     );
   });
 
-  router.post("/projects", (req, res, next) => {
-    res.send({ success: true });
+  router.get("/projects", (req, res, next) => {
+    const projects = new Projects(database);
+    const projectService = new ProjectService(projects);
+    projectService.getAllProjects().then((data) => {
+      res.send({ data, success: true });
+    })
   });
 
   router.delete("/projects/:id", (req, res, next) => {
