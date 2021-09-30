@@ -18,6 +18,10 @@ module.exports = function CustomerService(customerModel) {
     return customerModel.getCustomerByID(id, columns);
   }
 
+  this.getCustomerByIDWithUserInfo = async function(id) {
+    return customerModel.getCustomerByIDWithUserInfo(id);
+  }
+
   this.addNewCustomer = async function(data) {
     return customerModel.createNewCustomer(data);
   }

@@ -121,7 +121,7 @@ module.exports = function registerEndpoint(
           .addNewCustomer(data)
           .then((data) => {
             customerService
-              .getCustomerByID(data[0], CUSTOMER_RETURNING_COLUMNS)
+              .getCustomerByIDWithUserInfo(data[0])
               .then((data) => {
                 res.send(data[0]);
               });

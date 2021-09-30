@@ -40,6 +40,15 @@ module.exports =  function Customers(database) {
     return database(TABLE_NAME).where('id', id).select(returningColumns);
   }
 
+  this.getCustomerByIDWithUserInfo = async function(id) {
+    return database(TABLE_NAME)
+    .innerJoin('directus_users as cu', `${TABLE_NAME}.user_created`, 'cu.id' )
+    .innerJoin('directus_users as uu', `${TABLE_NAME}.user_updated`, 'uu.id' )
+    .innerJoin('directus_users as ui', `${TABLE_NAME}.user_incharge`, 'ui.id' )
+    .select([...CUSTOMER_COLUMNS, ...getUserColumnAlias('cu','created'), ...getUserColumnAlias('uu', 'updated'), ...getUserColumnAlias('ui', 'incharge')])
+    .where(`${TABLE_NAME}.id`, id);
+  }
+
   this.getCustomerCountByType = async function() {
     return database(TABLE_NAME).select(database.raw('count(*) as count, type')).where({status: 0}).groupBy('type');
   }
