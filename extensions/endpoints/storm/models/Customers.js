@@ -1,6 +1,7 @@
 module.exports =  function Customers(database) {
   const TABLE_NAME = 'customers';
   const CUSTOMER_SOURCE_TABLE_NAME = 'customer_source';
+  const CUSTOMER_PROJECTS_TABLE_NAME = 'customer_projects';
 
   const USERS_COL = [
     'first_name',
@@ -35,7 +36,14 @@ module.exports =  function Customers(database) {
   }
 
   this.createNewCustomer = async function(data) {
-    return database(TABLE_NAME).insert(data);
+    const { projects } = data;
+    delete data['projects'];
+    return database.transaction(async trx => {
+      const ids = await trx(TABLE_NAME).insert(data, 'id');
+      const customerProjectData = projects.map((project) => ({customer_id: ids[0], project_id: project}));
+      await trx(CUSTOMER_PROJECTS_TABLE_NAME).insert(customerProjectData);
+      return ids;
+    });
   }
 
   this.getCustomerByID = async function(id, returningColumns) {
