@@ -14,6 +14,7 @@ module.exports = function registerHook() {
       ...input,
       date_of_birth: input.date_of_birth ? input.date_of_birth: null,
       date_of_birth_additional: input.date_of_birth_additional ?date_of_birth_additional: null,
+      customer_source: input.customer_source ? input.customer_source: null,
     }
   }
 
