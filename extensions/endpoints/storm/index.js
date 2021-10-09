@@ -212,11 +212,18 @@ module.exports = function registerEndpoint(
     const actions = new Actions(database);
     const actionService = new ActionService(actions);
 
-    actionService.getAllActions().then((data) => {
+    const customers = new Customers(database);
+    const customerService = new CustomerService(customers);
+
+    Promise.all([
+      actionService.getAllActions(),
+      customerService.getAllCustomerSources(),
+    ]).then(([actions, customer_sources]) => {
       res.send({
         success: true,
         data: {
-          actions: data,
+          actions,
+          customer_sources,
         },
       });
     });

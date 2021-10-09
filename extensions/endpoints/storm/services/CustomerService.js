@@ -45,4 +45,8 @@ module.exports = function CustomerService(customerModel) {
     return await this.changeCustomerStatus(id, CUSTOMER_STATUS.DELETED);
   }
 
+  this.getAllCustomerSources = async function() {
+    const sources = await customerModel.getAllCustomerSource();
+    return sources.map((source) => ([source.title, source.value]));
+  }
 }

@@ -1,5 +1,7 @@
 module.exports =  function Customers(database) {
   const TABLE_NAME = 'customers';
+  const CUSTOMER_SOURCE_TABLE_NAME = 'customer_source';
+
   const USERS_COL = [
     'first_name',
     'last_name',
@@ -57,5 +59,9 @@ module.exports =  function Customers(database) {
     return database(TABLE_NAME).where('id', '=', id).update({
       status,
     });
+  }
+
+  this.getAllCustomerSource = async function() {
+    return database(CUSTOMER_SOURCE_TABLE_NAME).select([`title`, `value`]).orderBy('value');
   }
 }
