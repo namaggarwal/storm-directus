@@ -202,7 +202,7 @@ module.exports = function registerEndpoint(
   router.get("/projects", (req, res, next) => {
     const projects = new Projects(database);
     const projectService = new ProjectService(projects);
-    const columns = req.params.cols;
+    const columns = req.query.cols;
     const columnList =
       (columns && columns.split(",")) || PROJECT_RETURNING_COLUMNS;
     projectService.getAllProjects(columnList).then((data) => {
