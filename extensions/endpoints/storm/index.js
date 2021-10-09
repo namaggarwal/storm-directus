@@ -48,7 +48,25 @@ const CUSTOMER_DETAIL_RETURNING_COLUMNS = [
   "place_of_birth_additional",
   "postal_code",
   "customer_source",
-  "address_of_buyers"
+  "address_of_buyers",
+];
+
+const PROJECT_RETURNING_COLUMNS = [
+  "id",
+  "name",
+  "min_area",
+  "min_budget",
+  "max_budget",
+  "address_1",
+  "address_2",
+  "address_3",
+  "within",
+  "goal",
+  "bank_seen",
+  "accession",
+  "comments",
+  "last_updated",
+  "created_on",
 ];
 
 const CUSTOMER_TYPE = {
@@ -104,10 +122,10 @@ module.exports = function registerEndpoint(
     const customers = new Customers(database);
     const customerService = new CustomerService(customers);
     customerService
-    .getCustomerByID(customerID, CUSTOMER_DETAIL_RETURNING_COLUMNS)
-    .then((data) => {
-      res.send({ data: data[0], success: true });
-    });
+      .getCustomerByID(customerID, CUSTOMER_DETAIL_RETURNING_COLUMNS)
+      .then((data) => {
+        res.send({ data: data[0], success: true });
+      });
   });
 
   router.post("/customers", (req, res, next) => {
@@ -145,13 +163,12 @@ module.exports = function registerEndpoint(
     const customerService = new CustomerService(customers);
 
     customerService.deleteCustomerById(customerID).then((data) => {
-      if(data === 1) {
+      if (data === 1) {
         res.send({ success: true });
         return;
       }
       res.send({ success: false });
     });
-
   });
 
   router.post("/customers/:id/actions", (req, res, next) => {
@@ -185,9 +202,12 @@ module.exports = function registerEndpoint(
   router.get("/projects", (req, res, next) => {
     const projects = new Projects(database);
     const projectService = new ProjectService(projects);
-    projectService.getAllProjects().then((data) => {
+    const columns = req.params.cols;
+    const columnList =
+      (columns && columns.split(",")) || PROJECT_RETURNING_COLUMNS;
+    projectService.getAllProjects(columnList).then((data) => {
       res.send({ data, success: true });
-    })
+    });
   });
 
   router.delete("/projects/:id", (req, res, next) => {
@@ -199,13 +219,12 @@ module.exports = function registerEndpoint(
     const projectService = new ProjectService(projects);
 
     projectService.deleteProjectByID(projectID).then((data) => {
-      if(data === 1) {
+      if (data === 1) {
         res.send({ success: true });
         return;
       }
       res.send({ success: false });
     });
-
   });
 
   router.get("/types", (req, res) => {

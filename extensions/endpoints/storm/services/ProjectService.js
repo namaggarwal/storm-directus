@@ -6,8 +6,8 @@ module.exports = function ProjectService(projectModel) {
     'ARCHIVED': 2,
   };
 
-  this.getAllProjects = async function() {
-    return projectModel.getAllProjectsByStatus(PROJECT_STATUS.ACTIVE);
+  this.getAllProjects = async function(cols) {
+    return projectModel.getAllProjectsByColAndStatus(cols, PROJECT_STATUS.ACTIVE);
   }
 
   this.getProjectsCount = async function() {

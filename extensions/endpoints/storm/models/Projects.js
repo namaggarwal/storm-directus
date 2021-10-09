@@ -3,10 +3,10 @@ module.exports =  function Projects(database) {
   const GOAL_TABLE_NAME = 'goal';
   const WITHIN_TABLE_NAME = 'within';
 
-  this.getAllProjectsByStatus = async function(status) {
+  this.getAllProjectsByColAndStatus = async function(cols, status) {
     return database(TABLE_NAME)
     .where({status: status})
-    .select();
+    .select(cols);
   }
 
   this.getProjectsCount = async function() {
