@@ -47,7 +47,7 @@ const CUSTOMER_DETAIL_RETURNING_COLUMNS = [
   "date_of_birth_additional",
   "place_of_birth_additional",
   "postal_code",
-  "source_contact",
+  "customer_source",
   "address_of_buyers"
 ];
 
@@ -215,15 +215,22 @@ module.exports = function registerEndpoint(
     const customers = new Customers(database);
     const customerService = new CustomerService(customers);
 
+    const projects = new Projects(database);
+    const projectService = new ProjectService(projects);
+
     Promise.all([
       actionService.getAllActions(),
       customerService.getAllCustomerSources(),
-    ]).then(([actions, customer_sources]) => {
+      projectService.getAllGoal(),
+      projectService.getAllWithin(),
+    ]).then(([actions, customer_sources, goal, within]) => {
       res.send({
         success: true,
         data: {
           actions,
           customer_sources,
+          goal,
+          within,
         },
       });
     });

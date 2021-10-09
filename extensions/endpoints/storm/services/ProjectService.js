@@ -22,4 +22,14 @@ module.exports = function ProjectService(projectModel) {
   this.deleteProjectByID = async function(id) {
     return this.changeProjectStatus(id, PROJECT_STATUS.DELETED);
   }
+
+  this.getAllGoal = async function() {
+    const sources = await projectModel.getAllGoal();
+    return sources.map((source) => ([source.title, source.value]));
+  }
+
+  this.getAllWithin = async function() {
+    const sources = await projectModel.getAllWithin();
+    return sources.map((source) => ([source.title, source.value]));
+  }
 }
