@@ -30,12 +30,15 @@ module.exports =  function Customers(database) {
     .innerJoin('directus_users as uu', `${TABLE_NAME}.user_updated`, 'uu.id' )
     .innerJoin('directus_users as ui', `${TABLE_NAME}.user_incharge`, 'ui.id' )
     .leftJoin('customer_projects as cp', `${TABLE_NAME}.id`, 'cp.customer_id' )
+    .leftJoin('customer_actions as ca', `${TABLE_NAME}.id`, 'ca.customer_id' )
     .select([
       ...CUSTOMER_COLUMNS,
       ...getColumnAlias(USERS_COL, 'cu','created'),
       ...getColumnAlias(USERS_COL, 'uu', 'updated'),
       ...getColumnAlias(USERS_COL, 'ui', 'incharge'),
-      database.raw('GROUP_CONCAT(cp.project_id order by cp.created_on desc) as project_ids'),
+      database.raw('GROUP_CONCAT(distinct cp.project_id order by cp.created_on desc) as project_ids'),
+      database.raw('SUBSTRING_INDEX(GROUP_CONCAT(distinct ca.action_type order by ca.created_on desc),",",1) as last_action'),
+      database.raw('MAX(ca.created_on) as last_action_date'),
     ])
     .where({
       [`${TABLE_NAME}.type`]: type,
