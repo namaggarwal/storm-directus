@@ -19,8 +19,8 @@ module.exports =  function Customers(database) {
     `${TABLE_NAME}.created_on`
   ];
 
-  function getUserColumnAlias(tableAlias, prefix) {
-    return USERS_COL.map((val) => `${tableAlias}.${val} as ${prefix}_${val}`);
+  function getColumnAlias(colList, tableAlias, prefix) {
+    return colList.map((val) => `${tableAlias}.${val} as ${prefix}_${val}`);
   }
 
   this.getCustomersByType = async function(type) {
@@ -28,11 +28,19 @@ module.exports =  function Customers(database) {
     .innerJoin('directus_users as cu', `${TABLE_NAME}.user_created`, 'cu.id' )
     .innerJoin('directus_users as uu', `${TABLE_NAME}.user_updated`, 'uu.id' )
     .innerJoin('directus_users as ui', `${TABLE_NAME}.user_incharge`, 'ui.id' )
-    .select([...CUSTOMER_COLUMNS, ...getUserColumnAlias('cu','created'), ...getUserColumnAlias('uu', 'updated'), ...getUserColumnAlias('ui', 'incharge')])
+    .leftJoin('customer_projects as cp', `${TABLE_NAME}.id`, 'cp.customer_id' )
+    .select([
+      ...CUSTOMER_COLUMNS,
+      ...getColumnAlias(USERS_COL, 'cu','created'),
+      ...getColumnAlias(USERS_COL, 'uu', 'updated'),
+      ...getColumnAlias(USERS_COL, 'ui', 'incharge'),
+      database.raw('GROUP_CONCAT(cp.project_id order by cp.created_on desc) as project_ids'),
+    ])
     .where({
       [`${TABLE_NAME}.type`]: type,
       [`${TABLE_NAME}.status`]: 0,
-    });
+    })
+    .groupBy(`${TABLE_NAME}.id`);
   }
 
   this.createNewCustomer = async function(data) {
