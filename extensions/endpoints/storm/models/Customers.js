@@ -15,6 +15,7 @@ module.exports =  function Customers(database) {
     `${TABLE_NAME}.name`,
     `${TABLE_NAME}.phone`,
     `${TABLE_NAME}.email`,
+    `${TABLE_NAME}.customer_source`,
     `${TABLE_NAME}.last_updated`,
     `${TABLE_NAME}.created_on`
   ];
