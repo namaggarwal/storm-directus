@@ -37,8 +37,11 @@ module.exports = function CustomerService(customerModel) {
 
   this.changeCustomerStatus = async function(id, status) {
     const data = await customerModel.changeStatus(id, status);
-    console.log(data);
     return data;
+  }
+
+  this.updateCustomerById = async function(id, data) {
+    return await customerModel.updateCustomerById(id, data);
   }
 
   this.deleteCustomerById = async function(id) {

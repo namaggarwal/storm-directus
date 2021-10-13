@@ -81,6 +81,12 @@ module.exports =  function Customers(database) {
     });
   }
 
+  this.updateCustomerById = async function(id, data) {
+    return database(TABLE_NAME).where('id', '=', id).update({
+      ...data,
+    });
+  }
+
   this.getAllCustomerSource = async function() {
     return database(CUSTOMER_SOURCE_TABLE_NAME).select([`title`, `value`]).orderBy('value');
   }

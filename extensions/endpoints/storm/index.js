@@ -168,9 +168,16 @@ module.exports = function registerEndpoint(
 
   router.patch("/customers/:id", (req, res, next) => {
     const { accountability } = req;
+    const customerID = req.params.id;
+
+    const customers = new Customers(database);
+    const customerService = new CustomerService(customers);
     applyUpdateBeforeRules(req.body, accountability, "custom.customers").then(
       (data) => {
-        res.send({ success: true, data });
+        customerService.updateCustomerById(customerID, data).then((response) => {
+          console.log(response);
+          res.send({ success: true });
+        });
       });
   });
 
