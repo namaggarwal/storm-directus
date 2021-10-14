@@ -15,5 +15,7 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+RUN mv .env.docker .env
+
 EXPOSE 8055
 CMD [ "npm", "start" ]
