@@ -52,7 +52,7 @@ module.exports =  function Customers(database) {
     delete data['projects'];
     return database.transaction(async trx => {
       const ids = await trx(TABLE_NAME).insert(data, 'id');
-      if(projects){
+      if(Array.isArray(projects) && projects.length > 0){
         const customerProjectData = projects.map((project) => ({customer_id: ids[0], project_id: project}));
         await trx(CUSTOMER_PROJECTS_TABLE_NAME).insert(customerProjectData);
       }

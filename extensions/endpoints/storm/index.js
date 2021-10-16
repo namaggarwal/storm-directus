@@ -242,7 +242,6 @@ module.exports = function registerEndpoint(
               .then((result) => {
                 res.send(result[0]);
               });
-          res.send({ data: result, success: true });
         });
       })
       .catch((error) => {
