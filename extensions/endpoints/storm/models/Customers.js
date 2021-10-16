@@ -52,8 +52,10 @@ module.exports =  function Customers(database) {
     delete data['projects'];
     return database.transaction(async trx => {
       const ids = await trx(TABLE_NAME).insert(data, 'id');
-      const customerProjectData = projects.map((project) => ({customer_id: ids[0], project_id: project}));
-      await trx(CUSTOMER_PROJECTS_TABLE_NAME).insert(customerProjectData);
+      if(projects){
+        const customerProjectData = projects.map((project) => ({customer_id: ids[0], project_id: project}));
+        await trx(CUSTOMER_PROJECTS_TABLE_NAME).insert(customerProjectData);
+      }
       return ids;
     });
   }
@@ -67,7 +69,7 @@ module.exports =  function Customers(database) {
     .innerJoin('directus_users as cu', `${TABLE_NAME}.user_created`, 'cu.id' )
     .innerJoin('directus_users as uu', `${TABLE_NAME}.user_updated`, 'uu.id' )
     .innerJoin('directus_users as ui', `${TABLE_NAME}.user_incharge`, 'ui.id' )
-    .select([...CUSTOMER_COLUMNS, ...getUserColumnAlias('cu','created'), ...getUserColumnAlias('uu', 'updated'), ...getUserColumnAlias('ui', 'incharge')])
+    .select([...CUSTOMER_COLUMNS, ...getColumnAlias(USERS_COL,'cu','created'), ...getColumnAlias(USERS_COL, 'uu', 'updated'), ...getColumnAlias(USERS_COL, 'ui', 'incharge')])
     .where(`${TABLE_NAME}.id`, id);
   }
 

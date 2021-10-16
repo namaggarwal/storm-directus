@@ -157,7 +157,7 @@ module.exports = function registerEndpoint(
               });
           })
           .catch((error) => {
-            console.error(error.message);
+            console.error(error);
             return next(
               new ServiceUnavailableException("Unexpected error happened")
             );
