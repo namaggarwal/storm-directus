@@ -213,53 +213,53 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@directus/app@9.0.0-rc.96":
-  version "9.0.0-rc.96"
-  resolved "https://registry.yarnpkg.com/@directus/app/-/app-9.0.0-rc.96.tgz#aa17cd9ba7ad4dcab88d2e88dc946cf4c69ba34d"
-  integrity sha512-vfwzdsS7GK/7DjUZuJOtVS0wfqi6U1u5O9xFhI3/04lJy+IUKcg1KxDKL6d2oo9Fh9wTmxqGkkfrgrtKp/ijOw==
+"@directus/app@9.0.0-rc.98":
+  version "9.0.0-rc.98"
+  resolved "https://registry.yarnpkg.com/@directus/app/-/app-9.0.0-rc.98.tgz#334ce13e2421e74b2bc30a0098d8a16381ee67e2"
+  integrity sha512-pr/9PXHbT7seB0JWXnupnGDifGOl3Ytqiuindm69muK1qjh+MvgFPqTL6yxt3ixJHFW3PSJ7iV53zBw1TOoXFg==
 
-"@directus/drive-azure@9.0.0-rc.96":
-  version "9.0.0-rc.96"
-  resolved "https://registry.yarnpkg.com/@directus/drive-azure/-/drive-azure-9.0.0-rc.96.tgz#71b7ca3a97fb95d901fde0fdee7cb7150b550949"
-  integrity sha512-bRiGKNQnfWV7Id8wzN1AH60AiJ+k/6uP/W0iDm+YTVu30FlXvdx2gtHSkjyAQ7fDnN3BnG9MtaGVM37oy+16yg==
+"@directus/drive-azure@9.0.0-rc.98":
+  version "9.0.0-rc.98"
+  resolved "https://registry.yarnpkg.com/@directus/drive-azure/-/drive-azure-9.0.0-rc.98.tgz#2b3a7e57e3f7fb2ad78d24789cd421e7c56d63cb"
+  integrity sha512-CEjQlHF5ulkm/75YK2hHPmz6jGyp6GB+k6xCKb7TM0LnC1Ba1ozrrrFKi7ibhwaKxNH0oIBbmYLcTdW4K3JvoA==
   dependencies:
     "@azure/storage-blob" "^12.6.0"
-    "@directus/drive" "9.0.0-rc.96"
+    "@directus/drive" "9.0.0-rc.98"
     normalize-path "^3.0.0"
 
-"@directus/drive-gcs@9.0.0-rc.96":
-  version "9.0.0-rc.96"
-  resolved "https://registry.yarnpkg.com/@directus/drive-gcs/-/drive-gcs-9.0.0-rc.96.tgz#b258c48e755f968baf92c57c8b3add72fa32172d"
-  integrity sha512-/UOsRvB5JfBIGk4F7bgJaU748s7SNI2yljZjdBncAFgDJqZprmA6TB4/jgLPhRFcCDmVIFxzFbttXW6Nw7gIJw==
+"@directus/drive-gcs@9.0.0-rc.98":
+  version "9.0.0-rc.98"
+  resolved "https://registry.yarnpkg.com/@directus/drive-gcs/-/drive-gcs-9.0.0-rc.98.tgz#73bc4ba75a4105b3ee19b72d391bd05232ac6106"
+  integrity sha512-4qftNOubTghMMp1sOD/qioYU3dNQji5mW8kn3ahUPPxTrZSFxIUlcrCZKIBME98fGJGfv5zmCdJg+VbXZw2T9g==
   dependencies:
-    "@directus/drive" "9.0.0-rc.96"
+    "@directus/drive" "9.0.0-rc.98"
     "@google-cloud/storage" "^5.8.5"
     lodash "4.17.21"
     normalize-path "^3.0.0"
 
-"@directus/drive-s3@9.0.0-rc.96":
-  version "9.0.0-rc.96"
-  resolved "https://registry.yarnpkg.com/@directus/drive-s3/-/drive-s3-9.0.0-rc.96.tgz#83d0087e88c73055e5f5dbc8402f5002106017c2"
-  integrity sha512-UpY4l840v6fw2gKt0j+ayyLEsPUXvPn8yuUd4YDHgakmDvzSY41CgCY6VS/mC1alEtOI65bwaMVIs9fA6m4mBQ==
+"@directus/drive-s3@9.0.0-rc.98":
+  version "9.0.0-rc.98"
+  resolved "https://registry.yarnpkg.com/@directus/drive-s3/-/drive-s3-9.0.0-rc.98.tgz#25bc1bdce7c1b962c2d64f8e3bca1dd30727b1a2"
+  integrity sha512-x37UEYtZMUmMt0NyE0HzOhALGjP9s+zB5N4jE4ngkGfaVDUPHo5ak2wO7810kR3d9EVhzaifcDzXVXqVTQe/gA==
   dependencies:
-    "@directus/drive" "9.0.0-rc.96"
+    "@directus/drive" "9.0.0-rc.98"
     aws-sdk "^2.928.0"
     normalize-path "^3.0.0"
 
-"@directus/drive@9.0.0-rc.96":
-  version "9.0.0-rc.96"
-  resolved "https://registry.yarnpkg.com/@directus/drive/-/drive-9.0.0-rc.96.tgz#af23b2dbc14c22daf5b3a0dfb1b2b1b3c1314dfc"
-  integrity sha512-hnVl8GzMJ9rLh1Q98OxJZii4HoJhAFsjtCQfNlMHnCw9GFTC2Tto5L/LNA0Alom+XhOHP56dTsd7+dl8WFTJqQ==
+"@directus/drive@9.0.0-rc.98":
+  version "9.0.0-rc.98"
+  resolved "https://registry.yarnpkg.com/@directus/drive/-/drive-9.0.0-rc.98.tgz#4e3d85852e6902c294a04bb68af13600fd350090"
+  integrity sha512-GExwHdbc+SlvM7QoMcPq3QL+NUbhT+SWi3voIMaxAdLnrtUqpzNMHmPLSQoq6g2+2r9v8IAntnn0v0CSwAeX7Q==
   dependencies:
     fs-extra "^10.0.0"
     node-exceptions "^4.0.1"
 
-"@directus/extensions-sdk@9.0.0-rc.96":
-  version "9.0.0-rc.96"
-  resolved "https://registry.yarnpkg.com/@directus/extensions-sdk/-/extensions-sdk-9.0.0-rc.96.tgz#e7893d1f7e4ac502e11fc8ce47058eef2e08ca78"
-  integrity sha512-5mZOzqJdLsWuHeMGIOwdfYQAMfhG7vXbxMmZGM5FlSDUbdn5PGuuQ/sUmTsYqsWWOvYChwP8kF4NAEvVnZUaQA==
+"@directus/extensions-sdk@9.0.0-rc.98":
+  version "9.0.0-rc.98"
+  resolved "https://registry.yarnpkg.com/@directus/extensions-sdk/-/extensions-sdk-9.0.0-rc.98.tgz#12bdf5ecf1e3f1d126a9d661142b2031d5b0a797"
+  integrity sha512-wv7Fv4qNsQP/JGkwdWxdarYohFgcW2QJZ3iiSUQ0s0e4h1bC3BreZ709xpDf75PL7CqUoBaZ2oCf/wKkEy0/UQ==
   dependencies:
-    "@directus/shared" "9.0.0-rc.96"
+    "@directus/shared" "9.0.0-rc.98"
     "@rollup/plugin-commonjs" "^21.0.0"
     "@rollup/plugin-json" "^4.1.0"
     "@rollup/plugin-node-resolve" "^13.0.0"
@@ -276,23 +276,23 @@
     rollup-plugin-typescript2 "^0.30.0"
     rollup-plugin-vue "^6.0.0"
 
-"@directus/format-title@9.0.0-rc.96":
-  version "9.0.0-rc.96"
-  resolved "https://registry.yarnpkg.com/@directus/format-title/-/format-title-9.0.0-rc.96.tgz#68d3069316a9a919326d7cf6e88ab203b42573ff"
-  integrity sha512-LbvgnNe9+QmzBz6izJNIRuCJiRHF3TVQd8OfwJxn/wz9ADi9GUoJJKQLSePdGh4gYgG65ogs7lnzznN0aLMFCg==
+"@directus/format-title@9.0.0-rc.98":
+  version "9.0.0-rc.98"
+  resolved "https://registry.yarnpkg.com/@directus/format-title/-/format-title-9.0.0-rc.98.tgz#f70cd0065318c30d907478903910650cd897d103"
+  integrity sha512-bWQv3mIRFVxRToJKHtTX1ZYcHy7j+9e22CbUtFDfHYpKcbXRG9oVodijBbpAn8eexlgcfUZYhIiW11gs1eHePg==
 
-"@directus/schema@9.0.0-rc.96":
-  version "9.0.0-rc.96"
-  resolved "https://registry.yarnpkg.com/@directus/schema/-/schema-9.0.0-rc.96.tgz#955384e7796ba61c4de37c212df6e37510b4f4a5"
-  integrity sha512-S3BV0dLbzgONsS/kb/qVsSXiqIxL7yPbHcYJ1PvM2d7GywueOeuPtu5ZMI8rBeRR3kqNvEtxw0a+Bc90Cfonxg==
+"@directus/schema@9.0.0-rc.98":
+  version "9.0.0-rc.98"
+  resolved "https://registry.yarnpkg.com/@directus/schema/-/schema-9.0.0-rc.98.tgz#93dc663c96950ef90eca3efacb92a548190e7c5e"
+  integrity sha512-2KYFiqdAPTDwQZLELp3kE0CamihrRuowG3gre5Vb4ArsdtUDjHREAbzIYj3s6FhnQtDg19HkiIyjcnIzw6cqQg==
   dependencies:
     knex-schema-inspector "1.6.2"
     lodash "^4.17.21"
 
-"@directus/shared@9.0.0-rc.96":
-  version "9.0.0-rc.96"
-  resolved "https://registry.yarnpkg.com/@directus/shared/-/shared-9.0.0-rc.96.tgz#f9f2a462b18c5a59b69b9b67845da39879ab6e28"
-  integrity sha512-9qgCXmWnayDDdJqIBEJDyXTduvQ2k/+d7UGw7MORbp8ta/sh9jNoB7BiOESwOzHIjVwMILYg/Lp18d/uEle01Q==
+"@directus/shared@9.0.0-rc.98":
+  version "9.0.0-rc.98"
+  resolved "https://registry.yarnpkg.com/@directus/shared/-/shared-9.0.0-rc.98.tgz#9cb5a9fe5f07871e6a2dd664d68716b15ce99e97"
+  integrity sha512-d8YJgWut0zXGJl74ZZWOmnVASd+IamWVrDwjcr1q2dJxXI1AbkBOCGcSdtOmWHiIXxlnJCaJGeoWpXSTzOM3zA==
   dependencies:
     axios "*"
     date-fns "2.24.0"
@@ -308,10 +308,10 @@
     vue-i18n "9"
     vue-router "4"
 
-"@directus/specs@9.0.0-rc.96":
-  version "9.0.0-rc.96"
-  resolved "https://registry.yarnpkg.com/@directus/specs/-/specs-9.0.0-rc.96.tgz#876c197b38dcdf368d5bd1806b3ec68901a61134"
-  integrity sha512-ao5WmnCLAymhcmEgLCEn/MxoIBP5MriBMimt9mto1zCrZ+5jIN7OHbGPruhHPfkYxSYT8ynNMAGKWtfsQmqcXg==
+"@directus/specs@9.0.0-rc.98":
+  version "9.0.0-rc.98"
+  resolved "https://registry.yarnpkg.com/@directus/specs/-/specs-9.0.0-rc.98.tgz#4a69f19a46fb1e3fb50dfd8cce25359922d33419"
+  integrity sha512-zbVwShyFcVmdKDrkY6z3Ijssm3fV27AxNgTBGAmT9fjy+0Ne3BTZwg/mgZ32jMMKepfqeHcvOoXFcMG8n4xnfQ==
   dependencies:
     openapi3-ts "^2.0.1"
 
@@ -1123,7 +1123,7 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
 
-axios@*:
+axios@*, axios@^0.23.0:
   version "0.23.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.23.0.tgz#b0fa5d0948a8d1d75e3d5635238b6c4625b05149"
   integrity sha512-NmvAE4i0YAv5cKq8zlDoPd1VLKAqX5oLuZKs8xkJa4qi6RGn0uhCYFjWtHHC9EM/MwOwYWOs53W+V0aqEXq1sg==
@@ -1136,13 +1136,6 @@ axios@^0.21.1:
   integrity sha512-87otirqUw3e8CzHTMO+/9kh/FSgXt/eVDvipijwDtEuwbkySWZ9SBm6VEubmJ/kLKEoLQV/POhxXFb66bfekfg==
   dependencies:
     follow-redirects "^1.14.0"
-
-axios@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.22.0.tgz#bf702c41fb50fbca4539589d839a077117b79b25"
-  integrity sha512-Z0U3uhqQeg1oNcihswf4ZD57O3NrR1+ZXhxaROaWpDmsDTx7T2HNBV2ulBtie2hwJptu8UvgnJoK+BIqdzh/1w==
-  dependencies:
-    follow-redirects "^1.14.4"
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -2210,21 +2203,21 @@ dicer@0.3.0:
   dependencies:
     streamsearch "0.1.2"
 
-directus@^9.0.0-rc.96:
-  version "9.0.0-rc.96"
-  resolved "https://registry.yarnpkg.com/directus/-/directus-9.0.0-rc.96.tgz#21690f10fcdb7ca0938395bcbfb7c9eac9bfb0f3"
-  integrity sha512-VC/IV9idTH+13jI8AbnD4l/tis08S5C/p6n/zXI/AgviqgwVVsYtYwtTrWlEkS728sfVvqSC15RA5dbWg5N/3w==
+directus@^9.0.0-rc.98:
+  version "9.0.0-rc.98"
+  resolved "https://registry.yarnpkg.com/directus/-/directus-9.0.0-rc.98.tgz#773652a7bc19fb793db95187c4d8e06f1b3788aa"
+  integrity sha512-ORdxJctN5Y2V49md5lgItC0EJavF2i+De55ejvDY/slL+v2ebrHdBCm7OufBoAG3U4oJRL+Q7eV7dekk57u5Tw==
   dependencies:
-    "@directus/app" "9.0.0-rc.96"
-    "@directus/drive" "9.0.0-rc.96"
-    "@directus/drive-azure" "9.0.0-rc.96"
-    "@directus/drive-gcs" "9.0.0-rc.96"
-    "@directus/drive-s3" "9.0.0-rc.96"
-    "@directus/extensions-sdk" "9.0.0-rc.96"
-    "@directus/format-title" "9.0.0-rc.96"
-    "@directus/schema" "9.0.0-rc.96"
-    "@directus/shared" "9.0.0-rc.96"
-    "@directus/specs" "9.0.0-rc.96"
+    "@directus/app" "9.0.0-rc.98"
+    "@directus/drive" "9.0.0-rc.98"
+    "@directus/drive-azure" "9.0.0-rc.98"
+    "@directus/drive-gcs" "9.0.0-rc.98"
+    "@directus/drive-s3" "9.0.0-rc.98"
+    "@directus/extensions-sdk" "9.0.0-rc.98"
+    "@directus/format-title" "9.0.0-rc.98"
+    "@directus/schema" "9.0.0-rc.98"
+    "@directus/shared" "9.0.0-rc.98"
+    "@directus/specs" "9.0.0-rc.98"
     "@godaddy/terminus" "^4.9.0"
     "@rollup/plugin-alias" "^3.1.2"
     "@rollup/plugin-virtual" "^2.0.3"
@@ -2232,7 +2225,7 @@ directus@^9.0.0-rc.96:
     async "^3.2.0"
     async-mutex "^0.3.1"
     atob "^2.1.2"
-    axios "^0.22.0"
+    axios "^0.23.0"
     busboy "^0.3.1"
     camelcase "^6.2.0"
     chalk "^4.1.1"
