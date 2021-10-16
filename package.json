@@ -15,7 +15,7 @@
   "author": "Naman Aggarwal",
   "license": "ISC",
   "dependencies": {
-    "directus": "^9.0.0-rc.92",
+    "directus": "^9.0.0-rc.98",
     "mysql": "^2.18.1"
   },
   "devDependencies": {

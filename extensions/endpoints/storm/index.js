@@ -226,6 +226,23 @@ module.exports = function registerEndpoint(
     );
   });
 
+  router.post("/projects", (req, res, next) => {
+    const { accountability } = req;
+    const { ServiceUnavailableException } = exceptions;
+    const projects = new Projects(database);
+    const projectService = new ProjectService(projects);
+    applyCreateBeforeRules(req.body, accountability, "custom.projects").then(
+      (data) => {
+          res.send({data,success:true});
+          })
+          .catch((error) => {
+            console.error(error.message);
+            return next(
+              new ServiceUnavailableException("Unexpected error happened")
+            );
+          });
+  });
+
   router.get("/projects", (req, res, next) => {
     const projects = new Projects(database);
     const projectService = new ProjectService(projects);

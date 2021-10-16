@@ -25,6 +25,7 @@ module.exports = function registerHook() {
     "items.create.before": async function (input, { collection }) {
       switch (collection) {
         case "projects":
+        case "custom.projects":
           return sanitizeProjectInput(input);
         case "custom.customers":
           return sanitizeCustomersInput(input);
