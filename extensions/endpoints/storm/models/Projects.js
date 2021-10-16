@@ -28,4 +28,12 @@ module.exports =  function Projects(database) {
     return database(WITHIN_TABLE_NAME).select([`title`, `value`]).orderBy('value');
   }
 
+  this.addNewProject = async function(data) {
+    return await database(TABLE_NAME).insert(data);
+  }
+
+  this.getProjectByID = async function(id, returningColumns) {
+    return database(TABLE_NAME).where('id', id).select(returningColumns);
+  }
+
 }

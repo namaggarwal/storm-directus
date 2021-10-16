@@ -174,11 +174,14 @@ module.exports = function registerEndpoint(
     const customerService = new CustomerService(customers);
     applyUpdateBeforeRules(req.body, accountability, "custom.customers").then(
       (data) => {
-        customerService.updateCustomerById(customerID, data).then((response) => {
-          console.log(response);
-          res.send({ success: true });
-        });
-      });
+        customerService
+          .updateCustomerById(customerID, data)
+          .then((response) => {
+            console.log(response);
+            res.send({ success: true });
+          });
+      }
+    );
   });
 
   router.delete("/customers/:id", (req, res, next) => {
@@ -231,16 +234,23 @@ module.exports = function registerEndpoint(
     const { ServiceUnavailableException } = exceptions;
     const projects = new Projects(database);
     const projectService = new ProjectService(projects);
-    applyCreateBeforeRules(req.body, accountability, "custom.projects").then(
-      (data) => {
-          res.send({data,success:true});
-          })
-          .catch((error) => {
-            console.error(error.message);
-            return next(
-              new ServiceUnavailableException("Unexpected error happened")
-            );
-          });
+    applyCreateBeforeRules(req.body, accountability, "custom.projects")
+      .then((data) => {
+        projectService.addNewProject(data).then((projectIDs) => {
+          projectService
+              .getProjectByID(projectIDs[0],PROJECT_RETURNING_COLUMNS)
+              .then((result) => {
+                res.send(result[0]);
+              });
+          res.send({ data: result, success: true });
+        });
+      })
+      .catch((error) => {
+        console.error(error.message);
+        return next(
+          new ServiceUnavailableException("Unexpected error happened")
+        );
+      });
   });
 
   router.get("/projects", (req, res, next) => {

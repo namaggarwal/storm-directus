@@ -10,6 +10,14 @@ module.exports = function ProjectService(projectModel) {
     return projectModel.getAllProjectsByColAndStatus(cols, PROJECT_STATUS.ACTIVE);
   }
 
+  this.addNewProject = async function(data) {
+    return projectModel.addNewProject(data);
+  }
+
+  this.getProjectByID = async function(id, columns) {
+    return projectModel.getProjectByID(id, columns);
+  }
+
   this.getProjectsCount = async function() {
     const data = await projectModel.getProjectsCount();
     return data[0];
