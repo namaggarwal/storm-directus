@@ -104,7 +104,7 @@ module.exports = function registerEndpoint(
     const customerType = req.query.type ?? "SUSPECT";
     getCustomers({ database }, customerType)
       .then((data) => {
-        res.send(data);
+        res.send({data, success: true});
       })
       .catch((error) => {
         console.error(error);
