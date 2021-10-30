@@ -21,8 +21,8 @@ module.exports = function registerHook() {
     };
   };
 
-  const updateCustomerInput = (input, currData) => {
-    return input;
+  const sanitizeUpdateCustomerInput = (input, currData) => {
+    return sanitizeCustomersInput(input);
   }
 
   return {
@@ -40,7 +40,7 @@ module.exports = function registerHook() {
     "items.update.before": async function (input, { collection, currData }) {
       switch (collection) {
         case "custom.customers":
-          return updateCustomerInput(input, currData);
+          return sanitizeUpdateCustomerInput(input, currData);
         default:
           return input;
       }
