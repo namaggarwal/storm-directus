@@ -21,6 +21,10 @@ module.exports = function registerHook() {
     };
   };
 
+  const updateCustomerInput = (input, currData) => {
+    return input;
+  }
+
   return {
     "items.create.before": async function (input, { collection }) {
       switch (collection) {
@@ -33,10 +37,10 @@ module.exports = function registerHook() {
           return input;
       }
     },
-    "items.update.before": async function (input, { collection }) {
+    "items.update.before": async function (input, { collection, currData }) {
       switch (collection) {
         case "custom.customers":
-          return input;
+          return updateCustomerInput(input, currData);
         default:
           return input;
       }

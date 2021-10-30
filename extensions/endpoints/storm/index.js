@@ -9,7 +9,7 @@ const Actions = require("./models/Actions");
 const ActionService = require("./services/ActionService");
 
 const { getDashboard } = require("./routes/dashboard");
-const { getCustomers, createCustomer } = require("./routes/customer");
+const { getCustomers, createCustomer, editCustomer } = require("./routes/customer");
 
 const beforeCreateHooks = [
   sanitizeInputHook()["items.create.before"],
@@ -142,19 +142,16 @@ module.exports = function registerEndpoint(
   router.patch("/customers/:id", (req, res, next) => {
     const { accountability } = req;
     const customerID = req.params.id;
+    const { ServiceUnavailableException } = exceptions;
+    editCustomer({ database, accountability }, customerID, req.body)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((error) => {
+      console.error(error);
+      return next(new ServiceUnavailableException(error.message));
+    });
 
-    const customers = new Customers(database);
-    const customerService = new CustomerService(customers);
-    applyUpdateBeforeRules(req.body, accountability, "custom.customers").then(
-      (data) => {
-        customerService
-          .updateCustomerById(customerID, data)
-          .then((response) => {
-            console.log(response);
-            res.send({ success: true });
-          });
-      }
-    );
   });
 
   router.delete("/customers/:id", (req, res, next) => {

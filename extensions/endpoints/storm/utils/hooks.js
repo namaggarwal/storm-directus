@@ -18,9 +18,9 @@ async function applyCreateBeforeRules(input, accountability, collection) {
   return input;
 }
 
-async function applyUpdateBeforeRules(input, accountability, collection) {
+async function applyUpdateBeforeRules(input, accountability, collection, currData) {
   for (i in beforeUpdateHooks) {
-    input = await beforeUpdateHooks[i](input, { accountability, collection });
+    input = await beforeUpdateHooks[i](input, { accountability, collection, currData });
   }
   return input;
 }

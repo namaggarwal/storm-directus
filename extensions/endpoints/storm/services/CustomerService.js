@@ -40,8 +40,9 @@ module.exports = function CustomerService(customerModel) {
     return data;
   }
 
-  this.updateCustomerById = async function(id, data) {
-    return await customerModel.updateCustomerById(id, data);
+  this.updateCustomerById = async function(id, data, newProjects, deleteProjects) {
+    delete data.projects;
+    return await customerModel.updateCustomerById(id, data, newProjects, deleteProjects);
   }
 
   this.deleteCustomerById = async function(id) {
