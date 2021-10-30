@@ -5,7 +5,7 @@ const ProjectService = require("../services/ProjectService");
 const Projects = require("../models/Projects");
 
 module.exports = {
-  getDashboard: async (database) => {
+  getDashboard: async ({database}) => {
     const customers = new Customers(database);
     const customerService = new CustomerService(customers);
 

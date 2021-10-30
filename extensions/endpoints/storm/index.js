@@ -8,8 +8,8 @@ const sanitizeInputHook = require("../../hooks/sanitizeValues");
 const Actions = require("./models/Actions");
 const ActionService = require("./services/ActionService");
 
-const {getDashboard} = require("./routes/dashboard");
-const {getCustomers} = require("./routes/customer");
+const { getDashboard } = require("./routes/dashboard");
+const { getCustomers, createCustomer } = require("./routes/customer");
 
 const beforeCreateHooks = [
   sanitizeInputHook()["items.create.before"],
@@ -84,7 +84,6 @@ const PROJECT_RETURNING_COLUMNS = [
   "created_on",
 ];
 
-
 module.exports = function registerEndpoint(
   router,
   { services, exceptions, database }
@@ -93,10 +92,9 @@ module.exports = function registerEndpoint(
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
 
-    getDashboard(database).then((data) => {
+    getDashboard({ database }).then((data) => {
       res.send(data);
     });
-
   });
 
   router.get("/customers", (req, res, next) => {
@@ -104,12 +102,14 @@ module.exports = function registerEndpoint(
     const { ServiceUnavailableException } = exceptions;
 
     const customerType = req.query.type ?? "SUSPECT";
-    getCustomers(database, customerType).then((data) => {
-      res.send(data);
-    }).catch((error)=> {
-      console.error(error);
-      return next(new ServiceUnavailableException(error.message));
-    });
+    getCustomers({ database }, customerType)
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        return next(new ServiceUnavailableException(error.message));
+      });
   });
 
   router.get("/customers/:id", (req, res, next) => {
@@ -128,27 +128,15 @@ module.exports = function registerEndpoint(
   router.post("/customers", (req, res, next) => {
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
-    const customers = new Customers(database);
-    const customerService = new CustomerService(customers);
-    applyCreateBeforeRules(req.body, accountability, "custom.customers").then(
-      (data) => {
-        customerService
-          .addNewCustomer(data)
-          .then((data) => {
-            customerService
-              .getCustomerByIDWithUserInfo(data[0])
-              .then((data) => {
-                res.send(data[0]);
-              });
-          })
-          .catch((error) => {
-            console.error(error);
-            return next(
-              new ServiceUnavailableException("Unexpected error happened")
-            );
-          });
-      }
-    );
+
+    createCustomer({ database, accountability }, req.body)
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        return next(new ServiceUnavailableException(error.message));
+      });
   });
 
   router.patch("/customers/:id", (req, res, next) => {
@@ -223,10 +211,10 @@ module.exports = function registerEndpoint(
       .then((data) => {
         projectService.addNewProject(data).then((projectIDs) => {
           projectService
-              .getProjectByID(projectIDs[0],PROJECT_RETURNING_COLUMNS)
-              .then((result) => {
-                res.send(result[0]);
-              });
+            .getProjectByID(projectIDs[0], PROJECT_RETURNING_COLUMNS)
+            .then((result) => {
+              res.send(result[0]);
+            });
         });
       })
       .catch((error) => {
