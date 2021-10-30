@@ -8,6 +8,9 @@ const sanitizeInputHook = require("../../hooks/sanitizeValues");
 const Actions = require("./models/Actions");
 const ActionService = require("./services/ActionService");
 
+const {getDashboard} = require("./routes/dashboard");
+const {getCustomers} = require("./routes/customer");
+
 const beforeCreateHooks = [
   sanitizeInputHook()["items.create.before"],
   setUserHook()["items.create.before"],
@@ -81,11 +84,6 @@ const PROJECT_RETURNING_COLUMNS = [
   "created_on",
 ];
 
-const CUSTOMER_TYPE = {
-  SUSPECT: 1,
-  PROSPECT: 2,
-  CLIENT: 3,
-};
 
 module.exports = function registerEndpoint(
   router,
@@ -94,37 +92,24 @@ module.exports = function registerEndpoint(
   router.get("/dashboard", (req, res, next) => {
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
-    const customers = new Customers(database);
-    const customerService = new CustomerService(customers);
 
-    const projects = new Projects(database);
-    const projectService = new ProjectService(projects);
+    getDashboard(database).then((data) => {
+      res.send(data);
+    });
 
-    Promise.all([
-      customerService.getCustomerCountByType(),
-      projectService.getProjectsCount(),
-    ])
-      .then((data) => {
-        data = data.reduce((prev, val) => ({ ...prev, ...val }), {});
-        res.send({ data, success: true });
-      })
-      .catch((e) => {
-        console.log(e);
-        res.send({ success: false });
-      });
   });
 
   router.get("/customers", (req, res, next) => {
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
-    const customers = new Customers(database);
-    const customerService = new CustomerService(customers);
+
     const customerType = req.query.type ?? "SUSPECT";
-    customerService
-      .getCustomersByType(CUSTOMER_TYPE[customerType.toUpperCase()])
-      .then((data) => {
-        res.send({ data, success: true });
-      });
+    getCustomers(database, customerType).then((data) => {
+      res.send(data);
+    }).catch((error)=> {
+      console.error(error);
+      return next(new ServiceUnavailableException(error.message));
+    });
   });
 
   router.get("/customers/:id", (req, res, next) => {
