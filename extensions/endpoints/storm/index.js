@@ -9,7 +9,16 @@ const Actions = require("./models/Actions");
 const ActionService = require("./services/ActionService");
 
 const { getDashboard } = require("./routes/dashboard");
-const { getCustomers, createCustomer, editCustomer } = require("./routes/customer");
+const {
+  getCustomers,
+  createCustomer,
+  editCustomer,
+} = require("./routes/customer");
+
+const {
+  createProject,
+} = require("./routes/project");
+
 const { getTypes } = require("./routes/misc");
 
 const beforeCreateHooks = [
@@ -105,7 +114,7 @@ module.exports = function registerEndpoint(
     const customerType = req.query.type ?? "SUSPECT";
     getCustomers({ database }, customerType)
       .then((data) => {
-        res.send({data, success: true});
+        res.send({ data, success: true });
       })
       .catch((error) => {
         console.error(error);
@@ -145,14 +154,13 @@ module.exports = function registerEndpoint(
     const customerID = req.params.id;
     const { ServiceUnavailableException } = exceptions;
     editCustomer({ database, accountability }, customerID, req.body)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((error) => {
-      console.error(error);
-      return next(new ServiceUnavailableException(error.message));
-    });
-
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        return next(new ServiceUnavailableException(error.message));
+      });
   });
 
   router.delete("/customers/:id", (req, res, next) => {
@@ -203,17 +211,9 @@ module.exports = function registerEndpoint(
   router.post("/projects", (req, res, next) => {
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
-    const projects = new Projects(database);
-    const projectService = new ProjectService(projects);
-    applyCreateBeforeRules(req.body, accountability, "custom.projects")
+    createProject({ database, accountability }, req.body)
       .then((data) => {
-        projectService.addNewProject(data).then((projectIDs) => {
-          projectService
-            .getProjectByID(projectIDs[0], PROJECT_RETURNING_COLUMNS)
-            .then((result) => {
-              res.send(result[0]);
-            });
-        });
+        res.send(data);
       })
       .catch((error) => {
         console.error(error.message);
@@ -252,12 +252,13 @@ module.exports = function registerEndpoint(
   });
 
   router.get("/types", (req, res) => {
-    getTypes({database}).then((data)=>{
-      res.send(data);
-    })
-    .catch((error) => {
-      console.error(error);
-      return next(new ServiceUnavailableException(error.message));
-    });
+    getTypes({ database })
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        return next(new ServiceUnavailableException(error.message));
+      });
   });
 };

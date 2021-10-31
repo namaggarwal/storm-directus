@@ -11,6 +11,7 @@ module.exports = function ProjectService(projectModel) {
   }
 
   this.addNewProject = async function(data) {
+    delete data.kinds;
     return projectModel.addNewProject(data);
   }
 
