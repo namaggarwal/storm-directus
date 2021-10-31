@@ -2,6 +2,7 @@ module.exports =  function Projects(database) {
   const TABLE_NAME = 'projects';
   const GOAL_TABLE_NAME = 'goal';
   const WITHIN_TABLE_NAME = 'within';
+  const KIND_TABLE_NAME = 'kind';
 
   this.getAllProjectsByColAndStatus = async function(cols, status) {
     return database(TABLE_NAME)
@@ -34,6 +35,10 @@ module.exports =  function Projects(database) {
 
   this.getProjectByID = async function(id, returningColumns) {
     return database(TABLE_NAME).where('id', id).select(returningColumns);
+  }
+
+  this.getAllKind = async function() {
+    return database(KIND_TABLE_NAME).select([`title`, `value`]).orderBy('value');
   }
 
 }

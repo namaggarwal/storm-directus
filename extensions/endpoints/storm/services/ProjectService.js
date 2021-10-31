@@ -40,4 +40,9 @@ module.exports = function ProjectService(projectModel) {
     const sources = await projectModel.getAllWithin();
     return sources.map((source) => ([source.title, source.value]));
   }
+
+  this.getAllKind = async function() {
+    const sources = await projectModel.getAllKind();
+    return sources.map((source) => ([source.title, source.value]));
+  }
 }

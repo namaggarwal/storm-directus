@@ -15,11 +15,12 @@ async function getTypes({ database }) {
   const projects = new Projects(database);
   const projectService = new ProjectService(projects);
 
-  const [actionList, customer_sources, goal, within] = await Promise.all([
+  const [actionList, customer_sources, goal, within, kind] = await Promise.all([
     actionService.getAllActions(),
     customerService.getAllCustomerSources(),
     projectService.getAllGoal(),
     projectService.getAllWithin(),
+    projectService.getAllKind(),
   ]);
   return {
     success: true,
@@ -28,6 +29,7 @@ async function getTypes({ database }) {
       customer_sources,
       goal,
       within,
+      kind,
     },
   };
 }
