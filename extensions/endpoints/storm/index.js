@@ -10,6 +10,7 @@ const ActionService = require("./services/ActionService");
 
 const { getDashboard } = require("./routes/dashboard");
 const { getCustomers, createCustomer, editCustomer } = require("./routes/customer");
+const { getTypes } = require("./routes/misc");
 
 const beforeCreateHooks = [
   sanitizeInputHook()["items.create.before"],
@@ -251,30 +252,12 @@ module.exports = function registerEndpoint(
   });
 
   router.get("/types", (req, res) => {
-    const actions = new Actions(database);
-    const actionService = new ActionService(actions);
-
-    const customers = new Customers(database);
-    const customerService = new CustomerService(customers);
-
-    const projects = new Projects(database);
-    const projectService = new ProjectService(projects);
-
-    Promise.all([
-      actionService.getAllActions(),
-      customerService.getAllCustomerSources(),
-      projectService.getAllGoal(),
-      projectService.getAllWithin(),
-    ]).then(([actions, customer_sources, goal, within]) => {
-      res.send({
-        success: true,
-        data: {
-          actions,
-          customer_sources,
-          goal,
-          within,
-        },
-      });
+    getTypes({database}).then((data)=>{
+      res.send(data);
+    })
+    .catch((error) => {
+      console.error(error);
+      return next(new ServiceUnavailableException(error.message));
     });
   });
 };
