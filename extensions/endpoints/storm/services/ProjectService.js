@@ -11,7 +11,6 @@ module.exports = function ProjectService(projectModel) {
   }
 
   this.addNewProject = async function(data) {
-    delete data.kinds;
     return projectModel.addNewProject(data);
   }
 
@@ -44,6 +43,11 @@ module.exports = function ProjectService(projectModel) {
 
   this.getAllKind = async function() {
     const sources = await projectModel.getAllKind();
+    return sources.map((source) => ([source.title, source.value]));
+  }
+
+  this.getAllTypology = async function() {
+    const sources = await projectModel.getAllTypology();
     return sources.map((source) => ([source.title, source.value]));
   }
 }
