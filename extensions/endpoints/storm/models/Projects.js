@@ -13,16 +13,28 @@ module.exports = function Projects(database) {
     {
       key: "kinds",
       junction_table_name: PROJECT_KIND_TABLE_NAME,
+      junction_table_alias: "pk",
       project_column_name: "project_id",
       field_column_name: "kind_id",
     },
     {
       key: "typologies",
       junction_table_name: PROJECT_TYPOLOGY_TABLE_NAME,
+      junction_table_alias: "pt",
       project_column_name: "project_id",
       field_column_name: "typology_id",
     },
   ];
+
+  function addManyColumns(query,columnKey, tableName, tableAlias, tableProjectColumnName, fieldColumnName) {
+    return query
+      .leftJoin(`${tableName} as ${tableAlias}`, `${TABLE_NAME}.id`, `${tableAlias}.${tableProjectColumnName}`)
+      .select([
+        database.raw(
+          `GROUP_CONCAT(distinct ${tableAlias}.${fieldColumnName}) as ${columnKey}`
+        ),
+      ]);
+  }
 
   this.getAllProjectsByColAndStatus = async function (cols, status) {
     return database(TABLE_NAME).where({ status: status }).select(cols);
@@ -72,7 +84,11 @@ module.exports = function Projects(database) {
   };
 
   this.getProjectByID = async function (id) {
-    return database(TABLE_NAME).where("id", id).select(PROJECT_RETURNING_COLUMNS);
+    let query = database(TABLE_NAME).where(`${TABLE_NAME}.id`, id).select(PROJECT_RETURNING_COLUMNS);
+    PROJECT_MANY_CONF.forEach((colData) => {
+      query = addManyColumns(query,colData.key, colData.junction_table_name, colData.junction_table_alias, colData.project_column_name, colData.field_column_name);
+    });
+    return await query;
   };
 
   this.getAllKind = async function () {

@@ -4,22 +4,24 @@ const CUSTOMER_TYPE = {
   CLIENT: 3,
 };
 
+const PROJECTS_TABLE_NAME = "projects";
+
 const PROJECT_RETURNING_COLUMNS = [
-  "id",
-  "name",
-  "min_area",
-  "min_budget",
-  "max_budget",
-  "address_1",
-  "address_2",
-  "address_3",
-  "within",
-  "goal",
-  "bank_seen",
-  "accession",
-  "comments",
-  "last_updated",
-  "created_on",
+  `${PROJECTS_TABLE_NAME}.id`,
+  `${PROJECTS_TABLE_NAME}.name`,
+  `${PROJECTS_TABLE_NAME}.min_area`,
+  `${PROJECTS_TABLE_NAME}.min_budget`,
+  `${PROJECTS_TABLE_NAME}.max_budget`,
+  `${PROJECTS_TABLE_NAME}.address_1`,
+  `${PROJECTS_TABLE_NAME}.address_2`,
+  `${PROJECTS_TABLE_NAME}.address_3`,
+  `${PROJECTS_TABLE_NAME}.within`,
+  `${PROJECTS_TABLE_NAME}.goal`,
+  `${PROJECTS_TABLE_NAME}.bank_seen`,
+  `${PROJECTS_TABLE_NAME}.accession`,
+  `${PROJECTS_TABLE_NAME}.comments`,
+  `${PROJECTS_TABLE_NAME}.last_updated`,
+  `${PROJECTS_TABLE_NAME}.created_on`,
 ];
 
 
