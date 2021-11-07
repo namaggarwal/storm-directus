@@ -14,8 +14,9 @@ module.exports = function ProjectService(projectModel) {
     return projectModel.addNewProject(data);
   }
 
-  this.getProjectByID = async function(id, columns) {
-    return projectModel.getProjectByID(id, columns);
+  this.getProjectByID = async function(id) {
+    const data = await projectModel.getProjectByID(id);
+    return data[0];
   }
 
   this.getProjectsCount = async function() {

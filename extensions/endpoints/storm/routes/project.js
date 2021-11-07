@@ -17,6 +17,14 @@ async function createProject({database, accountability}, reqData) {
   return projectData[0];
 }
 
+async function getProjectByID({database}, projectID) {
+  const projects = new Projects(database);
+  const projectService = new ProjectService(projects);
+  const projectData = await projectService.getProjectByID(projectID);
+  return projectData;
+}
+
 module.exports = {
   createProject,
+  getProjectByID,
 }

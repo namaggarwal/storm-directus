@@ -1,3 +1,5 @@
+const {PROJECT_RETURNING_COLUMNS}  = require("../utils/constants");
+
 module.exports = function Projects(database) {
   const TABLE_NAME = "projects";
   const GOAL_TABLE_NAME = "goal";
@@ -69,8 +71,8 @@ module.exports = function Projects(database) {
     });
   };
 
-  this.getProjectByID = async function (id, returningColumns) {
-    return database(TABLE_NAME).where("id", id).select(returningColumns);
+  this.getProjectByID = async function (id) {
+    return database(TABLE_NAME).where("id", id).select(PROJECT_RETURNING_COLUMNS);
   };
 
   this.getAllKind = async function () {
