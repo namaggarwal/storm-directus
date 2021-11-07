@@ -1,13 +1,17 @@
 module.exports = function registerHook() {
   const sanitizeProjectInput = (input) => {
-    return {
-      ...input,
-      max_budget:
-        input.max_budget || input.max_budget === 0 ? input.max_budget : null,
-      min_budget:
-        input.min_budget || input.min_budget === 0 ? input.min_budget : null,
-      min_area: input.min_area || input.min_area === 0 ? input.min_area : null,
-    };
+    const optionalNums = [
+      'min_area',
+      'min_budget',
+      'max_budget',
+      'loan_amount',
+      'project_contribution',
+      'tax_income'
+    ];
+    optionalNums.forEach((opt) => {
+      input[opt] = input[opt] || input[opt] === 0 ? input[opt]: null;
+    });
+    return input;
   };
 
   const sanitizeCustomersInput = (input) => {
