@@ -1,5 +1,5 @@
 const CUSTOM_COLLECTIONS = ["projects", "custom.customers", "custom.actions", "custom.projects"];
-const CUSTOM_UPDATE_COLLECTIONS = ["custom.customers"];
+const CUSTOM_UPDATE_COLLECTIONS = ["custom.customers", "custom.projects"];
 
 const CREATE_FIELDS_MAP = {
   "projects": ["user_created", "user_updated"],

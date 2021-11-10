@@ -16,7 +16,7 @@ const {
 } = require("./routes/customer");
 
 const {
-  createProject, getProjectByID,
+  createProject, getProjectByID, editProject,
 } = require("./routes/project");
 
 const { getTypes } = require("./routes/misc");
@@ -220,6 +220,20 @@ module.exports = function registerEndpoint(
         return next(
           new ServiceUnavailableException("Unexpected error happened")
         );
+      });
+  });
+
+  router.patch("/projects/:id", (req, res, next) => {
+    const { accountability } = req;
+    const projectID = req.params.id;
+    const { ServiceUnavailableException } = exceptions;
+    editProject({ database, accountability }, projectID, req.body)
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        return next(new ServiceUnavailableException(error.message));
       });
   });
 

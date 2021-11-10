@@ -1,15 +1,16 @@
+const optionalProjectNums = [
+  "min_area",
+  "min_budget",
+  "max_budget",
+  "loan_amount",
+  "project_contribution",
+  "tax_income",
+];
+
 module.exports = function registerHook() {
   const sanitizeProjectInput = (input) => {
-    const optionalNums = [
-      'min_area',
-      'min_budget',
-      'max_budget',
-      'loan_amount',
-      'project_contribution',
-      'tax_income'
-    ];
-    optionalNums.forEach((opt) => {
-      input[opt] = input[opt] || input[opt] === 0 ? input[opt]: null;
+    optionalProjectNums.forEach((opt) => {
+      input[opt] = input[opt] || input[opt] === 0 ? input[opt] : null;
     });
     return input;
   };
@@ -27,7 +28,16 @@ module.exports = function registerHook() {
 
   const sanitizeUpdateCustomerInput = (input, currData) => {
     return sanitizeCustomersInput(input);
-  }
+  };
+
+  const sanitizeUpdateProjectInput = (input, currData) => {
+    optionalProjectNums.forEach((opt) => {
+      if (opt in input) {
+        input[opt] = input[opt] || input[opt] === 0 ? input[opt] : null;
+      }
+    });
+    return input;
+  };
 
   return {
     "items.create.before": async function (input, { collection }) {
@@ -45,6 +55,8 @@ module.exports = function registerHook() {
       switch (collection) {
         case "custom.customers":
           return sanitizeUpdateCustomerInput(input, currData);
+        case "custom.projects":
+          return sanitizeUpdateProjectInput(input, currData);
         default:
           return input;
       }
