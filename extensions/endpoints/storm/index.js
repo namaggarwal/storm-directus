@@ -13,6 +13,7 @@ const {
   getCustomers,
   createCustomer,
   editCustomer,
+  getCustomerByID,
 } = require("./routes/customer");
 
 const {
@@ -126,12 +127,12 @@ module.exports = function registerEndpoint(
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
     const customerID = req.params.id;
-    const customers = new Customers(database);
-    const customerService = new CustomerService(customers);
-    customerService
-      .getCustomerByID(customerID)
+    getCustomerByID({database}, customerID)
       .then((data) => {
-        res.send({ data: data[0], success: true });
+        res.send(data);
+      }).catch((error) => {
+        console.error(error);
+        return next(new ServiceUnavailableException(error.message));
       });
   });
 

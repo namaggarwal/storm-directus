@@ -30,6 +30,14 @@ async function createCustomer({ database, accountability }, reqData) {
   return customerData[0];
 }
 
+async function getCustomerByID({database}, customerID) {
+  const customers = new Customers(database);
+  const customerService = new CustomerService(customers);
+  const data = await customerService
+    .getCustomerByID(customerID);
+  return { data: data[0], success: true };
+}
+
 async function editCustomer({ database, accountability }, customerID, reqData) {
   const customers = new Customers(database);
   const customerService = new CustomerService(customers);
@@ -62,6 +70,7 @@ async function editCustomer({ database, accountability }, customerID, reqData) {
 }
 
 module.exports = {
+  getCustomerByID,
   getCustomers,
   createCustomer,
   editCustomer,
