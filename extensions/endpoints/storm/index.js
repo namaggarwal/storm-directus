@@ -129,7 +129,7 @@ module.exports = function registerEndpoint(
     const customers = new Customers(database);
     const customerService = new CustomerService(customers);
     customerService
-      .getCustomerByID(customerID, CUSTOMER_DETAIL_RETURNING_COLUMNS)
+      .getCustomerByID(customerID)
       .then((data) => {
         res.send({ data: data[0], success: true });
       });

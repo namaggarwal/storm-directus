@@ -16,6 +16,16 @@ function Customers(database) {
     `${TABLE_NAME}.created_on`,
   ];
 
+  const CUSTOMER_MANY_CONF = [
+    {
+      key: "projects",
+      junction_table_name: CUSTOMER_PROJECTS_TABLE_NAME,
+      junction_table_alias: "cp",
+      customer_column_name: "customer_id",
+      field_column_name: "project_id",
+    },
+  ];
+
   function getColumnAlias(colList, tableAlias, prefix) {
     return colList.map((val) => `${tableAlias}.${val} as ${prefix}_${val}`);
   }
@@ -32,14 +42,22 @@ function Customers(database) {
       ]);
   }
 
-  function addProjectColumns(query) {
-    return query
-      .leftJoin("customer_projects as cp", `${TABLE_NAME}.id`, "cp.customer_id")
+  function addManyColumns(query) {
+    CUSTOMER_MANY_CONF.forEach((colData) => {
+      query =  query
+      .leftJoin(
+        `${colData.junction_table_name} as ${colData.junction_table_alias}`,
+        `${TABLE_NAME}.id`,
+        `${colData.junction_table_alias}.${colData.customer_column_name}`
+      )
       .select([
         database.raw(
-          "GROUP_CONCAT(distinct cp.project_id order by cp.created_on desc) as project_ids"
+          `GROUP_CONCAT(distinct ${colData.junction_table_alias}.${colData.field_column_name}) as ${colData.key}`
         ),
       ]);
+    });
+
+    return query;
   }
 
   function addLastActionColumn(query) {
@@ -58,7 +76,7 @@ function Customers(database) {
     let query = database(TABLE_NAME).select([...CUSTOMER_COLUMNS]);
 
     query = addUserColumns(query);
-    query = addProjectColumns(query);
+    query = addManyColumns(query);
     query = addLastActionColumn(query);
 
     return query;
@@ -88,14 +106,11 @@ function Customers(database) {
     });
   };
 
-  this.getCustomerByID = async function (id, returningColumns) {
-    return database(TABLE_NAME).where("id", id).select(returningColumns);
-  };
-
-  this.getCustomerByIDWithUserInfo = async function (id) {
+  this.getCustomerByID = async function (id) {
     let query = getCustomersQuery();
     return query.where(`${TABLE_NAME}.id`, id);
   };
+
 
   this.getCustomerCountByType = async function () {
     return database(TABLE_NAME)

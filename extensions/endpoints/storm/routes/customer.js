@@ -24,7 +24,7 @@ async function createCustomer({ database, accountability }, reqData) {
     "custom.customers"
   );
   const insertedIDs = await customerService.addNewCustomer(sanitizedData);
-  const customerData = await customerService.getCustomerByIDWithUserInfo(
+  const customerData = await customerService.getCustomerByID(
     insertedIDs[0]
   );
   return customerData[0];
@@ -33,7 +33,7 @@ async function createCustomer({ database, accountability }, reqData) {
 async function editCustomer({ database, accountability }, customerID, reqData) {
   const customers = new Customers(database);
   const customerService = new CustomerService(customers);
-  const customerInfo = await customerService.getCustomerByIDWithUserInfo(
+  const customerInfo = await customerService.getCustomerByID(
     customerID
   );
   if (customerInfo == null || customerInfo.length != 1) {
@@ -55,7 +55,7 @@ async function editCustomer({ database, accountability }, customerID, reqData) {
     deleteProjects = existingProjects.filter((i) => !updatedProjects.includes(i));
   }
   await customerService.updateCustomerById(customerID, sanitizedData, newProjects, deleteProjects);
-  const updatedData = await customerService.getCustomerByIDWithUserInfo(
+  const updatedData = await customerService.getCustomerByID(
     customerID
   );
   return updatedData[0];

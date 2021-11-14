@@ -14,8 +14,8 @@ module.exports = function CustomerService(customerModel) {
     return customerModel.getCustomersByType(type);
   }
 
-  this.getCustomerByID = async function(id, columns) {
-    return customerModel.getCustomerByID(id, columns);
+  this.getCustomerByID = async function(id) {
+    return customerModel.getCustomerByID(id);
   }
 
   this.getCustomerByIDWithUserInfo = async function(id) {
