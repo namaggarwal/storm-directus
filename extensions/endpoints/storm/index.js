@@ -225,7 +225,7 @@ module.exports = function registerEndpoint(
 
   router.patch("/projects/:id", (req, res, next) => {
     const { accountability } = req;
-    const projectID = req.params.id;
+    const projectID = parseInt(req.params.id, 10);
     const { ServiceUnavailableException } = exceptions;
     editProject({ database, accountability }, projectID, req.body)
       .then((data) => {

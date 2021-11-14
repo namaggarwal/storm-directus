@@ -1,4 +1,4 @@
-const {PROJECT_RETURNING_COLUMNS}  = require("../utils/constants");
+const { PROJECT_RETURNING_COLUMNS } = require("../utils/constants");
 
 module.exports = function Projects(database) {
   const TABLE_NAME = "projects";
@@ -26,9 +26,20 @@ module.exports = function Projects(database) {
     },
   ];
 
-  function addManyColumns(query,columnKey, tableName, tableAlias, tableProjectColumnName, fieldColumnName) {
+  function addManyColumns(
+    query,
+    columnKey,
+    tableName,
+    tableAlias,
+    tableProjectColumnName,
+    fieldColumnName
+  ) {
     return query
-      .leftJoin(`${tableName} as ${tableAlias}`, `${TABLE_NAME}.id`, `${tableAlias}.${tableProjectColumnName}`)
+      .leftJoin(
+        `${tableName} as ${tableAlias}`,
+        `${TABLE_NAME}.id`,
+        `${tableAlias}.${tableProjectColumnName}`
+      )
       .select([
         database.raw(
           `GROUP_CONCAT(distinct ${tableAlias}.${fieldColumnName}) as ${columnKey}`
@@ -70,7 +81,7 @@ module.exports = function Projects(database) {
     });
     return database.transaction(async (trx) => {
       const ids = await trx(TABLE_NAME).insert(data);
-      for(juncField of junctionFieldsData){
+      for (juncField of junctionFieldsData) {
         if (juncField.data.length > 0) {
           const fieldInsertData = juncField.data.map((d) => ({
             [juncField["project_column_name"]]: ids[0],
@@ -83,10 +94,64 @@ module.exports = function Projects(database) {
     });
   };
 
+  this.updateProjectByID = async function (id, data, currData) {
+    const junctionFieldsData = PROJECT_MANY_CONF.map((colData) => {
+      const key = colData["key"];
+      const existingCol = currData[key]
+        ? currData[key].split(",").map((i) => parseInt(i, 10))
+        : [];
+      const updatedCol = data[key] ? data[key] : [];
+      const newData = updatedCol.filter((i) => !existingCol.includes(i));
+      const deleteData = existingCol.filter((i) => !updatedCol.includes(i));
+      delete data[key];
+      return {
+        ...colData,
+        newData,
+        deleteData,
+      };
+    });
+    return database.transaction(async (trx) => {
+      for (juncField of junctionFieldsData) {
+        if (juncField.newData.length > 0) {
+          const fieldInsertData = juncField.newData.map((d) => ({
+            [juncField["project_column_name"]]: id,
+            [juncField["field_column_name"]]: d,
+          }));
+          await trx(juncField.junction_table_name).insert(fieldInsertData);
+        }
+        if (juncField.deleteData.length > 0) {
+          await juncField.deleteData.forEach(async (d) => {
+            const delOptions = {
+              [juncField["project_column_name"]]: id,
+              [juncField["field_column_name"]]: d,
+            };
+            await trx(juncField.junction_table_name)
+              .where(delOptions)
+              .del();
+          });
+        }
+      }
+      await trx(TABLE_NAME)
+        .where("id", "=", id)
+        .update({
+          ...data,
+        });
+    });
+  };
+
   this.getProjectByID = async function (id) {
-    let query = database(TABLE_NAME).where(`${TABLE_NAME}.id`, id).select(PROJECT_RETURNING_COLUMNS);
+    let query = database(TABLE_NAME)
+      .where(`${TABLE_NAME}.id`, id)
+      .select(PROJECT_RETURNING_COLUMNS);
     PROJECT_MANY_CONF.forEach((colData) => {
-      query = addManyColumns(query,colData.key, colData.junction_table_name, colData.junction_table_alias, colData.project_column_name, colData.field_column_name);
+      query = addManyColumns(
+        query,
+        colData.key,
+        colData.junction_table_name,
+        colData.junction_table_alias,
+        colData.project_column_name,
+        colData.field_column_name
+      );
     });
     return await query;
   };

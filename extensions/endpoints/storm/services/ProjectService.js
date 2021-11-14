@@ -51,4 +51,8 @@ module.exports = function ProjectService(projectModel) {
     const sources = await projectModel.getAllTypology();
     return sources.map((source) => ([source.title, source.value]));
   }
+
+  this.updateProject = async function(projectID, data, currData) {
+    return projectModel.updateProjectByID(projectID, data, currData);
+  }
 }

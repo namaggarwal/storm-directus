@@ -38,8 +38,10 @@ async function editProject({database, accountability}, projectID, reqData) {
     "custom.projects",
     null
   );
-  console.log(sanitizedData);
-  return { success: true };
+  const currData = await projectService.getProjectByID(projectID);
+  await projectService.updateProject(projectID, sanitizedData, currData);
+  const projectData = await projectService.getProjectByID(projectID);
+  return { success: true, data: projectData };
 }
 
 module.exports = {
