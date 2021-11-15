@@ -7,6 +7,14 @@ const optionalProjectNums = [
   "tax_income",
 ];
 
+const optionalCustomerNums = [
+  "date_of_birth",
+  "date_of_birth_additional",
+  "customer_source",
+  "profession",
+  "profession_additional",
+]
+
 module.exports = function registerHook() {
   const sanitizeProjectInput = (input) => {
     optionalProjectNums.forEach((opt) => {
@@ -16,18 +24,19 @@ module.exports = function registerHook() {
   };
 
   const sanitizeCustomersInput = (input) => {
-    return {
-      ...input,
-      date_of_birth: input.date_of_birth ? input.date_of_birth : null,
-      date_of_birth_additional: input.date_of_birth_additional
-        ? date_of_birth_additional
-        : null,
-      customer_source: input.customer_source ? input.customer_source : null,
-    };
+    optionalCustomerNums.forEach((opt) => {
+      input[opt] = input[opt] ? input[opt] : null;
+    });
+    return input;
   };
 
   const sanitizeUpdateCustomerInput = (input, currData) => {
-    return sanitizeCustomersInput(input);
+    optionalCustomerNums.forEach((opt) => {
+      if (opt in input) {
+        input[opt] = input[opt] ? input[opt] : null;
+      }
+    });
+    return input;
   };
 
   const sanitizeUpdateProjectInput = (input, currData) => {
