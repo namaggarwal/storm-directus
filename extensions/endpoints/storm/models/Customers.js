@@ -53,6 +53,9 @@ function Customers(database) {
     `${TABLE_NAME}.notary_buyer_email`,
     `${TABLE_NAME}.marital_status`,
     `${TABLE_NAME}.marital_status_additional`,
+    `${TABLE_NAME}.date_of_compromise`,
+    `${TABLE_NAME}.dia_end_date`,
+    `${TABLE_NAME}.date_of_act`,
   ];
 
   const CUSTOMER_MANY_CONF = [

@@ -17,6 +17,9 @@ const optionalCustomerNums = [
   "vendor_profession",
   "vendor_profession_additional",
   "customer_source",
+  "date_of_compromise",
+  "dia_end_date",
+  "date_of_act",
 ]
 
 module.exports = function registerHook() {
