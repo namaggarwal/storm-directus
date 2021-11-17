@@ -27,6 +27,32 @@ function Customers(database) {
     `${TABLE_NAME}.address_of_buyers`,
     `${TABLE_NAME}.last_updated`,
     `${TABLE_NAME}.created_on`,
+
+    // Additional client columns
+    `${TABLE_NAME}.vendor_name`,
+    `${TABLE_NAME}.vendor_phone`,
+    `${TABLE_NAME}.vendor_email`,
+    `${TABLE_NAME}.vendor_date_of_birth`,
+    `${TABLE_NAME}.vendor_place_of_birth`,
+    `${TABLE_NAME}.vendor_nationality`,
+    `${TABLE_NAME}.vendor_name_additional`,
+    `${TABLE_NAME}.vendor_phone_additional`,
+    `${TABLE_NAME}.vendor_email_additional`,
+    `${TABLE_NAME}.vendor_date_of_birth_additional`,
+    `${TABLE_NAME}.vendor_place_of_birth_additional`,
+    `${TABLE_NAME}.vendor_nationality_additional`,
+    `${TABLE_NAME}.vendor_profession`,
+    `${TABLE_NAME}.vendor_profession_additional`,
+    `${TABLE_NAME}.vendor_address`,
+    `${TABLE_NAME}.vendor_property_address`,
+    `${TABLE_NAME}.notary_seller_name`,
+    `${TABLE_NAME}.notary_seller_phone`,
+    `${TABLE_NAME}.notary_seller_email`,
+    `${TABLE_NAME}.notary_buyer_name`,
+    `${TABLE_NAME}.notary_buyer_phone`,
+    `${TABLE_NAME}.notary_buyer_email`,
+    `${TABLE_NAME}.marital_status`,
+    `${TABLE_NAME}.marital_status_additional`,
   ];
 
   const CUSTOMER_MANY_CONF = [
@@ -57,17 +83,17 @@ function Customers(database) {
 
   function addManyColumns(query) {
     CUSTOMER_MANY_CONF.forEach((colData) => {
-      query =  query
-      .leftJoin(
-        `${colData.junction_table_name} as ${colData.junction_table_alias}`,
-        `${TABLE_NAME}.id`,
-        `${colData.junction_table_alias}.${colData.customer_column_name}`
-      )
-      .select([
-        database.raw(
-          `GROUP_CONCAT(distinct ${colData.junction_table_alias}.${colData.field_column_name}) as ${colData.key}`
-        ),
-      ]);
+      query = query
+        .leftJoin(
+          `${colData.junction_table_name} as ${colData.junction_table_alias}`,
+          `${TABLE_NAME}.id`,
+          `${colData.junction_table_alias}.${colData.customer_column_name}`
+        )
+        .select([
+          database.raw(
+            `GROUP_CONCAT(distinct ${colData.junction_table_alias}.${colData.field_column_name}) as ${colData.key}`
+          ),
+        ]);
     });
 
     return query;
@@ -123,7 +149,6 @@ function Customers(database) {
     let query = getCustomersQuery();
     return query.where(`${TABLE_NAME}.id`, id);
   };
-
 
   this.getCustomerCountByType = async function () {
     return database(TABLE_NAME)

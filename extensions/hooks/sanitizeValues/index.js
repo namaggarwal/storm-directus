@@ -10,9 +10,13 @@ const optionalProjectNums = [
 const optionalCustomerNums = [
   "date_of_birth",
   "date_of_birth_additional",
-  "customer_source",
   "profession",
   "profession_additional",
+  "vendor_date_of_birth",
+  "vendor_date_of_birth_additional",
+  "vendor_profession",
+  "vendor_profession_additional",
+  "customer_source",
 ]
 
 module.exports = function registerHook() {
