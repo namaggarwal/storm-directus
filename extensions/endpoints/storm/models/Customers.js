@@ -82,6 +82,15 @@ function Customers(database) {
     `${TABLE_NAME}.bank_deposit_date`,
     `${TABLE_NAME}.loan_agreement_date`,
     `${TABLE_NAME}.loan_acceptance_date`,
+    `${TABLE_NAME}.agency_ttc`,
+    `${TABLE_NAME}.fees_vat`,
+    `${TABLE_NAME}.fees_rate`,
+    `${TABLE_NAME}.interagency`,
+    `${TABLE_NAME}.interagency_name`,
+    `${TABLE_NAME}.hono_interagency`,
+    `${TABLE_NAME}.missing_parts_file`,
+    `${TABLE_NAME}.last_step`,
+    `${TABLE_NAME}.observations`,
   ];
 
   const CUSTOMER_MANY_CONF = [

@@ -38,6 +38,12 @@ const optionalCustomerNums = [
   "bank_deposit_date",
   "loan_agreement_date",
   "loan_acceptance_date",
+  "agency_ttc",
+  "fees_vat",
+  "fees_rate",
+  "interagency",
+  "hono_interagency",
+  "last_step",
 ]
 
 module.exports = function registerHook() {
