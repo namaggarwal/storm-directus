@@ -198,11 +198,13 @@ function Customers(database) {
     return query.where(`${TABLE_NAME}.id`, id);
   };
 
-  this.getCustomerCountByType = async function () {
-    return database(TABLE_NAME)
+  this.getCustomerCountByType = async function (user) {
+    let query = database(TABLE_NAME)
       .select(database.raw("count(*) as count, type"))
       .where({ status: 0 })
       .groupBy("type");
+
+      return addCustomerUserCondition(query, user);
   };
 
   this.changeStatus = async function (id, status) {

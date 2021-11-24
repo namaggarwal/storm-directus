@@ -103,7 +103,7 @@ module.exports = function registerEndpoint(
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
 
-    getDashboard({ database }).then((data) => {
+    getDashboard({ database, accountability }).then((data) => {
       res.send(data);
     });
   });

@@ -22,8 +22,8 @@ module.exports = function CustomerService(customerModel) {
     return customerModel.createNewCustomer(data);
   }
 
-  this.getCustomerCountByType = async function() {
-    const data = await customerModel.getCustomerCountByType();
+  this.getCustomerCountByType = async function(user) {
+    const data = await customerModel.getCustomerCountByType(user);
     const typeCount = CUSTOMER_TYPES.reduce((prev, val) => ({...prev, [val]:0}), {});
     data.forEach(val => {
       typeCount[CUSTOMER_TYPES[val["type"]-1]] = val["count"];
