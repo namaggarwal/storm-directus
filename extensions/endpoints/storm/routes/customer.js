@@ -6,11 +6,13 @@ const {
   applyUpdateBeforeRules,
 } = require("../utils/hooks");
 
-async function getCustomers({ database }, customerType) {
+async function getCustomers({ database, accountability }, customerType) {
+  const userIncharge = accountability.admin ? null : accountability.user;
   const customers = new Customers(database);
   const customerService = new CustomerService(customers);
   const data = await customerService.getCustomersByType(
-    CUSTOMER_TYPE[customerType.toUpperCase()]
+    CUSTOMER_TYPE[customerType.toUpperCase()],
+    userIncharge
   );
   return data;
 }

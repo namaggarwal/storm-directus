@@ -113,7 +113,7 @@ module.exports = function registerEndpoint(
     const { ServiceUnavailableException } = exceptions;
 
     const customerType = req.query.type ?? "SUSPECT";
-    getCustomers({ database }, customerType)
+    getCustomers({ database, accountability }, customerType)
       .then((data) => {
         res.send({ data, success: true });
       })

@@ -10,8 +10,8 @@ module.exports = function CustomerService(customerModel) {
     'ARCHIVED': 2,
   };
 
-  this.getCustomersByType = async function(type) {
-    return customerModel.getCustomersByType(type);
+  this.getCustomersByType = async function(type, user) {
+    return customerModel.getCustomersByType(type, user);
   }
 
   this.getCustomerByID = async function(id) {

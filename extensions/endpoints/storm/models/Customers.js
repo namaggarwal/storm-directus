@@ -159,8 +159,18 @@ function Customers(database) {
     return query;
   }
 
-  this.getCustomersByType = async function (type) {
+  function addCustomerUserCondition(query, user) {
+    if(!user) {
+      return query;
+    }
+    return query.where({
+      user_incharge: user,
+    });
+  }
+
+  this.getCustomersByType = async function (type, user) {
     let query = getCustomersQuery();
+    query = addCustomerUserCondition(query, user);
     return query.where({
       [`${TABLE_NAME}.type`]: type,
       [`${TABLE_NAME}.status`]: 0,
