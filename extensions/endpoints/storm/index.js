@@ -20,6 +20,10 @@ const {
   createProject, getProjectByID, editProject,
 } = require("./routes/project");
 
+const {
+  getCurrentUser,
+} = require("./routes/user");
+
 const { getTypes } = require("./routes/misc");
 
 const beforeCreateHooks = [
@@ -99,10 +103,24 @@ module.exports = function registerEndpoint(
   router,
   { services, exceptions, database }
 ) {
+
+  router.get("/me", (req, res, next) => {
+    const { accountability, schema } = req;
+    if (!accountability?.user) {
+			throw new InvalidCredentialsException();
+		}
+    getCurrentUser({database, accountability,schema,  services}).then((data) => {
+      res.send(data);
+    })
+    .catch((error) => {
+      console.error(error);
+      return next(new ServiceUnavailableException(error.message));
+    });
+  });
+
   router.get("/dashboard", (req, res, next) => {
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
-
     getDashboard({ database, accountability }).then((data) => {
       res.send(data);
     });
