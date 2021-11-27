@@ -3,10 +3,6 @@ const Customers = require("./models/Customers");
 
 const ProjectService = require("./services/ProjectService");
 const Projects = require("./models/Projects");
-const setUserHook = require("../../hooks/setuser");
-const sanitizeInputHook = require("../../hooks/sanitizeValues");
-const Actions = require("./models/Actions");
-const ActionService = require("./services/ActionService");
 
 const { getDashboard } = require("./routes/dashboard");
 const {
@@ -15,71 +11,15 @@ const {
   editCustomer,
   getCustomerByID,
 } = require("./routes/customer");
-
 const {
-  createProject, getProjectByID, editProject,
+  createProject,
+  getProjectByID,
+  editProject,
 } = require("./routes/project");
-
-const {
-  getCurrentUser,
-} = require("./routes/user");
-
+const { getCurrentUser } = require("./routes/user");
 const { getTypes } = require("./routes/misc");
+const { addAction } = require("./routes/actions");
 
-const beforeCreateHooks = [
-  sanitizeInputHook()["items.create.before"],
-  setUserHook()["items.create.before"],
-];
-
-const beforeUpdateHooks = [
-  sanitizeInputHook()["items.update.before"],
-  setUserHook()["items.update.before"],
-];
-
-async function applyCreateBeforeRules(input, accountability, collection) {
-  for (i in beforeCreateHooks) {
-    input = await beforeCreateHooks[i](input, { accountability, collection });
-  }
-  return input;
-}
-
-async function applyUpdateBeforeRules(input, accountability, collection) {
-  for (i in beforeUpdateHooks) {
-    input = await beforeUpdateHooks[i](input, { accountability, collection });
-  }
-  return input;
-}
-
-const CUSTOMER_RETURNING_COLUMNS = [
-  "id",
-  "name",
-  "phone",
-  "email",
-  "nationality",
-  "date_of_birth",
-  "place_of_birth",
-  "nationality",
-  "type",
-  "created_on",
-  "last_updated",
-  "user_created",
-  "user_updated",
-  "user_incharge",
-  "status",
-];
-
-const CUSTOMER_DETAIL_RETURNING_COLUMNS = [
-  ...CUSTOMER_RETURNING_COLUMNS,
-  "name_additional",
-  "phone_additional",
-  "email_additional",
-  "nationality_additional",
-  "date_of_birth_additional",
-  "place_of_birth_additional",
-  "postal_code",
-  "customer_source",
-  "address_of_buyers",
-];
 
 const PROJECT_RETURNING_COLUMNS = [
   "id",
@@ -103,20 +43,20 @@ module.exports = function registerEndpoint(
   router,
   { services, exceptions, database }
 ) {
-
   router.get("/me", (req, res, next) => {
     const { accountability, schema } = req;
     const { InvalidCredentialsException } = exceptions;
     if (!accountability?.user) {
-			throw new InvalidCredentialsException();
-		}
-    getCurrentUser({database, accountability,schema,  services}).then((data) => {
-      res.send(data);
-    })
-    .catch((error) => {
-      console.error(error);
-      return next(new ServiceUnavailableException(error.message));
-    });
+      throw new InvalidCredentialsException();
+    }
+    getCurrentUser({ database, accountability, schema, services })
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        return next(new ServiceUnavailableException(error.message));
+      });
   });
 
   router.get("/dashboard", (req, res, next) => {
@@ -146,10 +86,11 @@ module.exports = function registerEndpoint(
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
     const customerID = req.params.id;
-    getCustomerByID({database}, customerID)
+    getCustomerByID({ database }, customerID)
       .then((data) => {
         res.send(data);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.error(error);
         return next(new ServiceUnavailableException(error.message));
       });
@@ -202,30 +143,18 @@ module.exports = function registerEndpoint(
 
   router.post("/customers/:id/actions", (req, res, next) => {
     const { accountability } = req;
+    const { ServiceUnavailableException } = exceptions;
     const customerID = req.params.id;
-    const customers = new Customers(database);
-    const customerService = new CustomerService(customers);
-
-    const actions = new Actions(database);
-    const actionService = new ActionService(actions);
-
-    applyCreateBeforeRules(req.body, accountability, "custom.actions").then(
-      (data) => {
-        customerService.getCustomerByID(customerID, [`id`]).then((customer) => {
-          if (customer.length === 0) {
-            res.send({ success: false });
-            return;
-          }
-          data = {
-            ...data,
-            customer_id: customerID,
-          };
-          actionService.addAction(data).then((action) => {
-            res.send({ success: true });
-          });
-        });
-      }
-    );
+    addAction({ database, accountability }, customerID, req.body)
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((error) => {
+        console.error(error.message);
+        return next(
+          new ServiceUnavailableException("Unexpected error happened")
+        );
+      });
   });
 
   router.post("/projects", (req, res, next) => {
