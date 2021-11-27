@@ -106,6 +106,7 @@ module.exports = function registerEndpoint(
 
   router.get("/me", (req, res, next) => {
     const { accountability, schema } = req;
+    const { InvalidCredentialsException } = exceptions;
     if (!accountability?.user) {
 			throw new InvalidCredentialsException();
 		}
