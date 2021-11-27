@@ -6,7 +6,8 @@ const {
   applyUpdateBeforeRules,
 } = require("../utils/hooks");
 
-async function getCustomers({ database, accountability }, customerType) {
+async function getCustomers({ database, accountability }, req) {
+  const customerType = req.query.type ? parseInt(req.query.type, 10): CUSTOMER_TYPE.SUSPECT;
   const userIncharge = accountability.admin ? null : accountability.user;
   const customers = new Customers(database);
   const customerService = new CustomerService(customers);
@@ -17,7 +18,8 @@ async function getCustomers({ database, accountability }, customerType) {
   return data;
 }
 
-async function createCustomer({ database, accountability }, reqData) {
+async function createCustomer({ database, accountability }, req) {
+  const reqData = req.body;
   const customers = new Customers(database);
   const customerService = new CustomerService(customers);
   const sanitizedData = await applyCreateBeforeRules(
@@ -32,7 +34,8 @@ async function createCustomer({ database, accountability }, reqData) {
   return customerData[0];
 }
 
-async function getCustomerByID({database}, customerID) {
+async function getCustomerByID({database}, req) {
+  const customerID = req.params.id;
   const customers = new Customers(database);
   const customerService = new CustomerService(customers);
   const data = await customerService
@@ -40,7 +43,9 @@ async function getCustomerByID({database}, customerID) {
   return { data: data[0], success: true };
 }
 
-async function editCustomer({ database, accountability }, customerID, reqData) {
+async function editCustomer({ database, accountability }, req) {
+  const customerID = req.params.id;
+  const reqData = req.body;
   const customers = new Customers(database);
   const customerService = new CustomerService(customers);
   const customerInfo = await customerService.getCustomerByID(

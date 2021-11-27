@@ -72,8 +72,7 @@ module.exports = function registerEndpoint(
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
 
-    const customerType = req.query.type ? parseInt(req.query.type, 10): CUSTOMER_TYPE.SUSPECT;
-    getCustomers({ database, accountability }, customerType)
+    getCustomers({ database, accountability }, req)
       .then((data) => {
         res.send({ data, success: true });
       })
@@ -86,8 +85,7 @@ module.exports = function registerEndpoint(
   router.get("/customers/:id", (req, res, next) => {
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
-    const customerID = req.params.id;
-    getCustomerByID({ database }, customerID)
+    getCustomerByID({ database }, req)
       .then((data) => {
         res.send(data);
       })
@@ -101,7 +99,7 @@ module.exports = function registerEndpoint(
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
 
-    createCustomer({ database, accountability }, req.body)
+    createCustomer({ database, accountability }, req)
       .then((data) => {
         res.send(data);
       })
@@ -113,9 +111,8 @@ module.exports = function registerEndpoint(
 
   router.patch("/customers/:id", (req, res, next) => {
     const { accountability } = req;
-    const customerID = req.params.id;
     const { ServiceUnavailableException } = exceptions;
-    editCustomer({ database, accountability }, customerID, req.body)
+    editCustomer({ database, accountability }, req)
       .then((data) => {
         res.send(data);
       })
