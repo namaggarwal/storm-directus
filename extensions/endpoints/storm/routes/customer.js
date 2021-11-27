@@ -11,7 +11,7 @@ async function getCustomers({ database, accountability }, customerType) {
   const customers = new Customers(database);
   const customerService = new CustomerService(customers);
   const data = await customerService.getCustomersByType(
-    CUSTOMER_TYPE[customerType.toUpperCase()],
+    customerType,
     userIncharge
   );
   return data;

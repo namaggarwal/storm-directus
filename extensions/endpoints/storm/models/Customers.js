@@ -1,97 +1,13 @@
+const {
+  CUSTOMER_ALL_COLUMNS
+} = require("../utils/constants");
+
 function Customers(database) {
   const TABLE_NAME = "customers";
   const CUSTOMER_SOURCE_TABLE_NAME = "customer_source";
   const CUSTOMER_PROJECTS_TABLE_NAME = "customer_projects";
 
   const USERS_COL = ["first_name", "last_name", "avatar"];
-
-  const CUSTOMER_COLUMNS = [
-    `${TABLE_NAME}.id`,
-    `${TABLE_NAME}.type`,
-    `${TABLE_NAME}.name`,
-    `${TABLE_NAME}.name_additional`,
-    `${TABLE_NAME}.phone`,
-    `${TABLE_NAME}.phone_additional`,
-    `${TABLE_NAME}.email`,
-    `${TABLE_NAME}.email_additional`,
-    `${TABLE_NAME}.profession`,
-    `${TABLE_NAME}.profession_additional`,
-    `${TABLE_NAME}.date_of_birth`,
-    `${TABLE_NAME}.date_of_birth_additional`,
-    `${TABLE_NAME}.place_of_birth`,
-    `${TABLE_NAME}.place_of_birth_additional`,
-    `${TABLE_NAME}.nationality`,
-    `${TABLE_NAME}.nationality_additional`,
-    `${TABLE_NAME}.postal_code`,
-    `${TABLE_NAME}.customer_source`,
-    `${TABLE_NAME}.address_of_buyers`,
-    `${TABLE_NAME}.last_updated`,
-    `${TABLE_NAME}.created_on`,
-
-    // Additional client columns
-    `${TABLE_NAME}.vendor_name`,
-    `${TABLE_NAME}.vendor_phone`,
-    `${TABLE_NAME}.vendor_email`,
-    `${TABLE_NAME}.vendor_date_of_birth`,
-    `${TABLE_NAME}.vendor_place_of_birth`,
-    `${TABLE_NAME}.vendor_nationality`,
-    `${TABLE_NAME}.vendor_name_additional`,
-    `${TABLE_NAME}.vendor_phone_additional`,
-    `${TABLE_NAME}.vendor_email_additional`,
-    `${TABLE_NAME}.vendor_date_of_birth_additional`,
-    `${TABLE_NAME}.vendor_place_of_birth_additional`,
-    `${TABLE_NAME}.vendor_nationality_additional`,
-    `${TABLE_NAME}.vendor_profession`,
-    `${TABLE_NAME}.vendor_profession_additional`,
-    `${TABLE_NAME}.vendor_address`,
-    `${TABLE_NAME}.vendor_property_address`,
-    `${TABLE_NAME}.notary_seller_name`,
-    `${TABLE_NAME}.notary_seller_phone`,
-    `${TABLE_NAME}.notary_seller_email`,
-    `${TABLE_NAME}.notary_buyer_name`,
-    `${TABLE_NAME}.notary_buyer_phone`,
-    `${TABLE_NAME}.notary_buyer_email`,
-    `${TABLE_NAME}.marital_status`,
-    `${TABLE_NAME}.marital_status_additional`,
-    `${TABLE_NAME}.date_of_compromise`,
-    `${TABLE_NAME}.dia_end_date`,
-    `${TABLE_NAME}.date_of_act`,
-    `${TABLE_NAME}.trustee_contact`,
-    `${TABLE_NAME}.joint_property`,
-    `${TABLE_NAME}.net_selling_price`,
-    `${TABLE_NAME}.hai_sale_price`,
-    `${TABLE_NAME}.security_deposit`,
-    `${TABLE_NAME}.lots_sold`,
-    `${TABLE_NAME}.coownership_lots`,
-    `${TABLE_NAME}.condominium_fees`,
-    `${TABLE_NAME}.total_funding_amount`,
-    `${TABLE_NAME}.funds_source`,
-    `${TABLE_NAME}.suspensive_conditions`,
-    `${TABLE_NAME}.project_contribution`,
-    `${TABLE_NAME}.mandate`,
-    `${TABLE_NAME}.agency_fees`,
-    `${TABLE_NAME}.procedure_progress`,
-    `${TABLE_NAME}.property_use`,
-    `${TABLE_NAME}.purchase_type`,
-    `${TABLE_NAME}.name_of_bank`,
-    `${TABLE_NAME}.loan_term`,
-    `${TABLE_NAME}.loan_rate`,
-    `${TABLE_NAME}.loan_amount`,
-    `${TABLE_NAME}.bank_email`,
-    `${TABLE_NAME}.bank_phone`,
-    `${TABLE_NAME}.bank_deposit_date`,
-    `${TABLE_NAME}.loan_agreement_date`,
-    `${TABLE_NAME}.loan_acceptance_date`,
-    `${TABLE_NAME}.agency_ttc`,
-    `${TABLE_NAME}.fees_vat`,
-    `${TABLE_NAME}.fees_rate`,
-    `${TABLE_NAME}.interagency`,
-    `${TABLE_NAME}.interagency_name`,
-    `${TABLE_NAME}.hono_interagency`,
-    `${TABLE_NAME}.missing_parts_file`,
-    `${TABLE_NAME}.last_step`,
-    `${TABLE_NAME}.observations`,
-  ];
 
   const CUSTOMER_MANY_CONF = [
     {
@@ -149,8 +65,8 @@ function Customers(database) {
       .groupBy(`${TABLE_NAME}.id`);
   }
 
-  function getCustomersQuery() {
-    let query = database(TABLE_NAME).select([...CUSTOMER_COLUMNS]);
+  function getCustomersQuery(cols) {
+    let query = database(TABLE_NAME).select(cols ? cols : [...CUSTOMER_ALL_COLUMNS]);
 
     query = addUserColumns(query);
     query = addManyColumns(query);
@@ -168,8 +84,8 @@ function Customers(database) {
     });
   }
 
-  this.getCustomersByType = async function (type, user) {
-    let query = getCustomersQuery();
+  this.getCustomersByType = async function (type, user, cols) {
+    let query = getCustomersQuery(cols);
     query = addCustomerUserCondition(query, user);
     return query.where({
       [`${TABLE_NAME}.type`]: type,

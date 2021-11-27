@@ -1,3 +1,4 @@
+const { CUSTOMER_LIST_COLUMNS, CUSTOMER_TYPE, CUSTOMER_CLIENT_LIST_COLUMNS } = require("../utils/constants");
 
 
 module.exports = function CustomerService(customerModel) {
@@ -11,7 +12,8 @@ module.exports = function CustomerService(customerModel) {
   };
 
   this.getCustomersByType = async function(type, user) {
-    return customerModel.getCustomersByType(type, user);
+    const cols = type === CUSTOMER_TYPE.CLIENT ? CUSTOMER_CLIENT_LIST_COLUMNS: CUSTOMER_LIST_COLUMNS;
+    return customerModel.getCustomersByType(type, user, cols);
   }
 
   this.getCustomerByID = async function(id) {
