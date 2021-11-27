@@ -19,6 +19,7 @@ const {
 const { getCurrentUser } = require("./routes/user");
 const { getTypes } = require("./routes/misc");
 const { addAction } = require("./routes/actions");
+const { CUSTOMER_TYPE } = require("./utils/constants");
 
 
 const PROJECT_RETURNING_COLUMNS = [
@@ -71,7 +72,7 @@ module.exports = function registerEndpoint(
     const { accountability } = req;
     const { ServiceUnavailableException } = exceptions;
 
-    const customerType = req.query.type ?? "SUSPECT";
+    const customerType = req.query.type ? parseInt(req.query.type, 10): CUSTOMER_TYPE.SUSPECT;
     getCustomers({ database, accountability }, customerType)
       .then((data) => {
         res.send({ data, success: true });

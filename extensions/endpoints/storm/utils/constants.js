@@ -35,8 +35,15 @@ const CUSTOMER_LIST_COLUMNS = [
 
 const CUSTOMER_CLIENT_LIST_COLUMNS = [
   `${CUSTOMER_TABLE_NAME}.id`,
+  `${CUSTOMER_TABLE_NAME}.last_step`,
+  `${CUSTOMER_TABLE_NAME}.vendor_name`,
+  `${CUSTOMER_TABLE_NAME}.vendor_name_additional`,
   `${CUSTOMER_TABLE_NAME}.name`,
-  `${CUSTOMER_TABLE_NAME}.customer_source`,
+  `${CUSTOMER_TABLE_NAME}.name_additional`,
+  `${CUSTOMER_TABLE_NAME}.agency_ttc`,
+  `${CUSTOMER_TABLE_NAME}.fees_vat`,
+  `${CUSTOMER_TABLE_NAME}.fees_rate`,
+  `${CUSTOMER_TABLE_NAME}.last_step`,
   `${CUSTOMER_TABLE_NAME}.last_updated`,
   `${CUSTOMER_TABLE_NAME}.created_on`,
 ];
