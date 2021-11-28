@@ -8,7 +8,9 @@ const Customers = require("../models/Customers");
 const Actions = require("../models/Actions");
 const ActionService = require("../services/ActionService");
 
-async function addAction({ database, accountability }, customerID, reqData) {
+async function addAction({ database, accountability }, req) {
+  const customerID = req.params.id;
+  const reqData = req.body;
   const customers = new Customers(database);
   const customerService = new CustomerService(customers);
 

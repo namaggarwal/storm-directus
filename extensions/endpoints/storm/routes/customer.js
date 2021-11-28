@@ -7,7 +7,9 @@ const {
 } = require("../utils/hooks");
 
 async function getCustomers({ database, accountability }, req) {
-  const customerType = req.query.type ? parseInt(req.query.type, 10): CUSTOMER_TYPE.SUSPECT;
+  const customerType = req.query.type
+    ? parseInt(req.query.type, 10)
+    : CUSTOMER_TYPE.SUSPECT;
   const userIncharge = accountability.admin ? null : accountability.user;
   const customers = new Customers(database);
   const customerService = new CustomerService(customers);
@@ -15,7 +17,7 @@ async function getCustomers({ database, accountability }, req) {
     customerType,
     userIncharge
   );
-  return data;
+  return { success: true, data };
 }
 
 async function createCustomer({ database, accountability }, req) {
@@ -28,18 +30,15 @@ async function createCustomer({ database, accountability }, req) {
     "custom.customers"
   );
   const insertedIDs = await customerService.addNewCustomer(sanitizedData);
-  const customerData = await customerService.getCustomerByID(
-    insertedIDs[0]
-  );
+  const customerData = await customerService.getCustomerByID(insertedIDs[0]);
   return customerData[0];
 }
 
-async function getCustomerByID({database}, req) {
+async function getCustomerByID({ database }, req) {
   const customerID = req.params.id;
   const customers = new Customers(database);
   const customerService = new CustomerService(customers);
-  const data = await customerService
-    .getCustomerByID(customerID);
+  const data = await customerService.getCustomerByID(customerID);
   return { data: data[0], success: true };
 }
 
@@ -48,9 +47,7 @@ async function editCustomer({ database, accountability }, req) {
   const reqData = req.body;
   const customers = new Customers(database);
   const customerService = new CustomerService(customers);
-  const customerInfo = await customerService.getCustomerByID(
-    customerID
-  );
+  const customerInfo = await customerService.getCustomerByID(customerID);
   if (customerInfo == null || customerInfo.length != 1) {
     throw new Error("Customer not found");
   }
@@ -63,17 +60,40 @@ async function editCustomer({ database, accountability }, req) {
   );
   let newProjects = [];
   let deleteProjects = [];
-  if(sanitizedData.hasOwnProperty('projects')){
-    const existingProjects = existingData.project_ids ? existingData.project_ids.split(',').map(i=>parseInt(i,10)) : [];
-    const updatedProjects = sanitizedData.projects ? sanitizedData.projects : [];
+  if (sanitizedData.hasOwnProperty("projects")) {
+    const existingProjects = existingData.project_ids
+      ? existingData.project_ids.split(",").map((i) => parseInt(i, 10))
+      : [];
+    const updatedProjects = sanitizedData.projects
+      ? sanitizedData.projects
+      : [];
     newProjects = updatedProjects.filter((i) => !existingProjects.includes(i));
-    deleteProjects = existingProjects.filter((i) => !updatedProjects.includes(i));
+    deleteProjects = existingProjects.filter(
+      (i) => !updatedProjects.includes(i)
+    );
   }
-  await customerService.updateCustomerById(customerID, sanitizedData, newProjects, deleteProjects);
-  const updatedData = await customerService.getCustomerByID(
-    customerID
+  await customerService.updateCustomerById(
+    customerID,
+    sanitizedData,
+    newProjects,
+    deleteProjects
   );
+  const updatedData = await customerService.getCustomerByID(customerID);
   return updatedData[0];
+}
+
+async function deleteCustomerById({ database }, req) {
+  const customerID = req.params.id;
+
+  const customers = new Customers(database);
+  const customerService = new CustomerService(customers);
+
+  const data = customerService.deleteCustomerById(customerID);
+
+  if (data === 1) {
+    return { success: true };
+  }
+  return { success: false };
 }
 
 module.exports = {
@@ -81,4 +101,5 @@ module.exports = {
   getCustomers,
   createCustomer,
   editCustomer,
+  deleteCustomerById,
 };
