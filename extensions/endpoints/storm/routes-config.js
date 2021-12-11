@@ -14,7 +14,7 @@ const {
   getAllProjects,
 } = require("./routes/project");
 const { getCurrentUser } = require("./routes/user");
-const { getTypes } = require("./routes/misc");
+const { getTypes, getCustomLinks } = require("./routes/misc");
 const { addAction } = require("./routes/actions");
 
 module.exports = [
@@ -94,4 +94,10 @@ module.exports = [
     method: "GET",
     component: getTypes,
   },
+  /// Custom Links ///
+  {
+    path: "/links",
+    method: "GET",
+    component: getCustomLinks,
+  }
 ];

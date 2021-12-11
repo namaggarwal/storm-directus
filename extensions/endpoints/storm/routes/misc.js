@@ -4,6 +4,8 @@ const ProjectService = require("../services/ProjectService");
 const Projects = require("../models/Projects");
 const Actions = require("../models/Actions");
 const ActionService = require("../services/ActionService");
+const Misc = require("../models/Misc");
+const MiscService = require("../services/MiscService");
 
 async function getTypes({ database }) {
   const actions = new Actions(database);
@@ -37,6 +39,17 @@ async function getTypes({ database }) {
   };
 }
 
+async function getCustomLinks({ database }) {
+  const misc = new Misc(database);
+  const miscService = new MiscService(misc);
+  const data = await miscService.getCustomLinks();
+  return {
+    success: true,
+    data,
+  };
+}
+
 module.exports = {
   getTypes,
+  getCustomLinks,
 };
